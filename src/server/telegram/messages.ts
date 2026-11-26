@@ -3,12 +3,12 @@ import type { OrderStatus } from "@/domain/order";
 /** Everything the shop bot says on its own (the assistant's replies come from the model). */
 
 export const GREETING =
-  "Здравствуйте! Я Соня из Магазина снов. Магазин открывается кнопкой ниже: там каталог, корзина и ваши заказы.\n\nДемо: товары вымышленные, деньги не списываются.";
+  "Здравствуйте! Я Соня из Магазина снов. Можно открыть магазин кнопкой ниже или просто рассказать, какой сон хочется, — подберу.\n\nДемо: товары вымышленные, деньги не списываются.";
 
 export const OPEN_SHOP_BUTTON = "Открыть магазин";
 
-/** Until the assistant is connected, free text gets a friendly pointer to the shop. */
-export const ASSISTANT_SOON = "Скоро я смогу отвечать на вопросы и подбирать сны прямо здесь. А пока всё есть в магазине — кнопка ниже.";
+/** Under a reply that changed the cart: one tap to see it. */
+export const OPEN_CART_BUTTON = "Открыть корзину";
 
 export interface OrderNotice {
   number: number;
