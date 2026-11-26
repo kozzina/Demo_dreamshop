@@ -11,7 +11,7 @@ import { greeting, MOTTO, PRINCIPLES, SETS, STORY } from "@/ui/content";
 import { typo } from "@/ui/format";
 import { findMood, MOODS } from "@/ui/moods";
 import { useShop } from "@/ui/shop-context";
-import { useVera } from "@/ui/vera";
+import { useAssistant } from "@/ui/assistant";
 import styles from "./home.module.css";
 
 const SKELETON_CARDS = 4;
@@ -24,7 +24,7 @@ const useGreeting = () => useSyncExternalStore(subscribeNever, () => greeting(ne
 
 export function CatalogHome({ blurbs }: { blurbs: Record<DreamSlug, DreamBlurb> }) {
   const { catalog, ready } = useShop();
-  const { openVera } = useVera();
+  const { openAssistant } = useAssistant();
   const router = useRouter();
   const pathname = usePathname();
   const mood = findMood(useSearchParams().get("mood"));
@@ -60,11 +60,11 @@ export function CatalogHome({ blurbs }: { blurbs: Record<DreamSlug, DreamBlurb> 
       </section>
 
       <div className={styles.features}>
-        <button type="button" className={styles.veraCard} onClick={openVera}>
+        <button type="button" className={styles.assistantCard} onClick={openAssistant}>
           <span className={styles.featureIcon}>
             <Icon name="sparkle" size={22} />
           </span>
-          <span className={styles.featureTitle}>Подобрать с{"\u00a0"}Верой</span>
+          <span className={styles.featureTitle}>Подобрать с{"\u00a0"}Соней</span>
           <span className={styles.featureText}>{typo("Расскажите о настроении, а AI\u2011ассистент подберёт сон")}</span>
           <span className={styles.featureAction}>Начать</span>
         </button>

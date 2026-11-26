@@ -25,7 +25,7 @@ export default function CartPage() {
     return (
       <>
         <TopBar title="Корзина" />
-        <EmptyState icon="bag" title="Корзина пуста" text="Выберите сон в каталоге или попросите Веру подобрать." action={{ href: "/app", label: "В каталог" }} />
+        <EmptyState icon="bag" title="Корзина пуста" text="Выберите сон в каталоге или попросите Соню подобрать." action={{ href: "/app", label: "В каталог" }} />
       </>
     );
   }

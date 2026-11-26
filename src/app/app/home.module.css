@@ -65,7 +65,7 @@
   margin-bottom: 26px;
 }
 
-.veraCard,
+.assistantCard,
 .smallCard {
   display: grid;
   align-content: start;
@@ -84,12 +84,12 @@
   transition: var(--press);
 }
 
-.veraCard:active,
+.assistantCard:active,
 .smallCard:active {
   transform: scale(0.98);
 }
 
-.veraCard {
+.assistantCard {
   grid-row: span 2;
   background:
     radial-gradient(120% 80% at 100% 0%, rgb(205 185 255 / 0.65), transparent 60%),

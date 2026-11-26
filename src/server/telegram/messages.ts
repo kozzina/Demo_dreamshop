@@ -3,7 +3,7 @@ import type { OrderStatus } from "@/domain/order";
 /** Everything the shop bot says on its own (the assistant's replies come from the model). */
 
 export const GREETING =
-  "Здравствуйте! Я Вера из Магазина снов. Магазин открывается кнопкой ниже: там каталог, корзина и ваши заказы.\n\nДемо: товары вымышленные, деньги не списываются.";
+  "Здравствуйте! Я Соня из Магазина снов. Магазин открывается кнопкой ниже: там каталог, корзина и ваши заказы.\n\nДемо: товары вымышленные, деньги не списываются.";
 
 export const OPEN_SHOP_BUTTON = "Открыть магазин";
 

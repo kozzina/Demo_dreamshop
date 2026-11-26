@@ -13,7 +13,7 @@ import { Icon } from "@/ui/components/Icon";
 import { TopBar } from "@/ui/components/TopBar";
 import { STATUS_NOTE } from "@/ui/content";
 import { nightLabel, STATUS_LABEL } from "@/ui/format";
-import { useVera } from "@/ui/vera";
+import { useAssistant } from "@/ui/assistant";
 import styles from "./orders.module.css";
 
 /** Statuses change in the manager feed on the site; the list polls so the buyer sees it live. */
@@ -30,7 +30,7 @@ export default function OrdersPage() {
 function Orders() {
   const placed = Number(useSearchParams().get("placed"));
   const [orders, setOrders] = useState<OrderView[] | null>(null);
-  const { openVera } = useVera();
+  const { openAssistant } = useAssistant();
 
   useEffect(() => {
     let alive = true;
@@ -83,9 +83,9 @@ function Orders() {
           <OrderCard key={order.number} order={order} highlight={order.number === placed} />
         ))}
       </ul>
-      <button type="button" className={styles.ask} onClick={openVera}>
+      <button type="button" className={styles.ask} onClick={openAssistant}>
         <Icon name="sparkle" size={18} />
-        Вопрос по заказу? Спросите Веру
+        Вопрос по заказу? Спросите Соню
       </button>
     </>
   );

@@ -1,4 +1,4 @@
-/* Floating glass tab bar; Vera rises above it in the middle. */
+/* Floating glass tab bar; Sonya rises above it in the middle. */
 .nav {
   position: fixed;
   inset: auto 0 0;
@@ -24,7 +24,7 @@
 }
 
 .tab,
-.vera {
+.assistant {
   display: grid;
   justify-items: center;
   gap: 3px;
@@ -43,7 +43,7 @@
 }
 
 .tab:active,
-.vera:active {
+.assistant:active {
   transform: scale(0.95);
 }
 
@@ -75,11 +75,11 @@
   text-align: center;
 }
 
-.vera {
+.assistant {
   color: var(--accent);
 }
 
-.veraButton {
+.assistantButton {
   display: grid;
   place-items: center;
   width: 58px;

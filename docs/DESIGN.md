@@ -23,7 +23,7 @@ It feels like waking up from a good dream, and the covers read as part of the sa
 The shop's knowledge base (`content/knowledge.md`) is the brief: every screen shows what the
 shop actually promises, not just a product grid.
 
-- **Home** — greeting by the buyer's time of day; a Vera card and two shortcuts (sets, the best
+- **Home** — greeting by the buyer's time of day; a Sonya card and two shortcuts (sets, the best
   seller) in the reference's 1 + 2 layout; occasions from the «what to suggest» table; dream cards
   with mood, label (best seller, limited, sold out) and price; «about the workshop» with the motto,
   story and safety principles.
@@ -35,8 +35,8 @@ shop actually promises, not just a product grid.
 - **Cart** — each night is a card with a load meter (dreams and hours against the limits).
 - **Checkout** — order with covers, fictional data as text, «what happens next».
 - **Orders** — a success moment after paying, live status in the shop's own words, progress.
-- **Vera** — the round button in the tab bar opens a sheet with quick asks. Until the assistant
-  is connected they open the matching selection; inside Telegram there is «write to Vera».
+- **Sonya** — the round button in the tab bar opens a sheet with quick asks. Until the assistant
+  is connected they open the matching selection; inside Telegram there is «write to Sonya».
 
 ## Tokens
 

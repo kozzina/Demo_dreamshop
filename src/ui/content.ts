@@ -38,8 +38,8 @@ export const SETS: readonly DreamSet[] = [
   { id: "big-day", name: "Перед большим днём", pitch: "Выспаться за две ночи до события, а накануне — услышать «получилось».", dreams: ["no-alarm-sleep", "exam-passed"] },
 ];
 
-/** Quick asks for Vera. Until the assistant is connected they open the matching selection. */
-export const VERA_PROMPTS: readonly { label: string; href: string }[] = [
+/** Quick asks for Sonya. Until the assistant is connected they open the matching selection. */
+export const ASSISTANT_PROMPTS: readonly { label: string; href: string }[] = [
   { label: "Хочу выспаться", href: "/app?mood=calm" },
   { label: "Что-нибудь яркое", href: "/app?mood=adventure" },
   { label: "Перед экзаменом", href: "/app?mood=big-day" },
