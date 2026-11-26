@@ -9,7 +9,7 @@ import styles from "./shop.module.css";
 const display = Unbounded({ subsets: ["cyrillic", "latin"], weight: ["500", "600"], variable: "--font-display" });
 const sans = Manrope({ subsets: ["cyrillic", "latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-sans" });
 
-export const metadata: Metadata = { title: "Магазин снов" };
+export const metadata: Metadata = { title: "Dream Shop" };
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f4f0fa" };
 
 /**

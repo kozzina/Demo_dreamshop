@@ -126,11 +126,11 @@ export function ManagerChat() {
           Чаты
         </span>
         <div className={styles.title}>
-          <b>Менеджер · Магазин снов</b>
+          <b>Менеджер · Dream Shop</b>
           <span>{stats ? `бот · сегодня ${stats.ordersToday} заказов на ${stats.totalToday}` : "бот"}</span>
         </div>
         <span className={styles.avatar} aria-hidden>
-          МС
+          DS
         </span>
       </header>
 

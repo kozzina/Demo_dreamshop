@@ -45,7 +45,7 @@ export function CatalogHome({ blurbs }: { blurbs: Record<DreamSlug, DreamBlurb> 
           <span className={styles.logo}>
             <Icon name="moon" size={18} />
           </span>
-          Магазин снов
+          Dream Shop
         </span>
         <span className={styles.demo}>Демо · товары вымышлены</span>
       </header>
