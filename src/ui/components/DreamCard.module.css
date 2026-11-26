@@ -103,8 +103,10 @@
 }
 
 .featured .name {
-  font-size: 22px;
-  letter-spacing: -0.01em;
+  font-family: var(--display);
+  letter-spacing: -0.02em;
+  font-size: 19px;
+  font-weight: 600;
 }
 
 .teaser {

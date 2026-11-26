@@ -18,6 +18,8 @@
 }
 
 .empty h2 {
+  font-family: var(--display);
+  letter-spacing: -0.02em;
   margin: 0;
   font-size: 26px;
   font-weight: 500;

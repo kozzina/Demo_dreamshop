@@ -10,6 +10,8 @@
 
 .card h2,
 .next h2 {
+  font-family: var(--display);
+  letter-spacing: -0.02em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

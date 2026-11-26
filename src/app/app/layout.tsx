@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
+import { Manrope, Unbounded } from "next/font/google";
 import { ShopNav } from "@/ui/components/ShopNav";
 import { ShopProvider } from "@/ui/shop-context";
 import { AssistantProvider } from "@/ui/assistant";
 import styles from "./shop.module.css";
 
+/** Display face for titles: wide, soft, a little dreamy; Manrope stays for everything you read. */
+const display = Unbounded({ subsets: ["cyrillic", "latin"], weight: ["500", "600"], variable: "--font-display" });
 const sans = Manrope({ subsets: ["cyrillic", "latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-sans" });
 
 export const metadata: Metadata = { title: "Магазин снов" };
@@ -17,7 +19,7 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 export default function ShopLayout({ children }: LayoutProps<"/app">) {
   return (
     <ShopProvider>
-      <div className={`${styles.shop} ${sans.variable}`}>
+      <div className={`${styles.shop} ${sans.variable} ${display.variable}`}>
         {/* Inside the themed root, so the sheet inherits the shop's fonts and tokens. */}
         <AssistantProvider>
           <main className={styles.main}>{children}</main>
