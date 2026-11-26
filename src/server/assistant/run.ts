@@ -123,7 +123,8 @@ export async function askAssistant(session: Session, text: string): Promise<Assi
         if (calls.length > 0) turn[turn.length - 1] = { role: "assistant", content: textOf(response.content) || "…" };
         await db().insert(chatMessages).values(turn.map((m) => ({ sessionId: session.id, role: m.role === "assistant" ? ("assistant" as const) : ("user" as const), content: m.content })));
         await recordUsage(session.id, cost);
-        trace.push(`ответ: ${config.assistant.model} · $${cost.toFixed(4)}`);
+        // The model name stays private: the trace shows what was done and what it cost.
+        trace.push(`ответ готов · $${cost.toFixed(4)}`);
         const answer = textOf(response.content);
         return { messages: answer ? splitReply(answer) : [FALLBACK_REPLY], trace, changed };
       }
