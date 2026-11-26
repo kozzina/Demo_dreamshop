@@ -2,6 +2,7 @@ import "server-only";
 import { desc, eq, gt } from "drizzle-orm";
 import { db } from "../db/client";
 import { events, orders } from "../db/schema";
+import { maybeAddActivity } from "./activity";
 import { advanceStaleOrders } from "./orders";
 import type { FeedEvent } from "@/shared/contract";
 
@@ -14,6 +15,8 @@ export const FEED_SIZE = 50;
  */
 export async function listFeed(viewerSessionId: string | null, afterId = 0): Promise<FeedEvent[]> {
   await advanceStaleOrders();
+  // The shop is never silent for long while someone watches: see activity.ts.
+  await maybeAddActivity().catch((err) => console.error("[activity]", err));
   const rows = await db()
     .select({ event: events, orderStatus: orders.status, sessionId: orders.sessionId })
     .from(events)

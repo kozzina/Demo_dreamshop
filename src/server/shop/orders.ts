@@ -1,12 +1,12 @@
 import "server-only";
 import { and, desc, eq, inArray, lt, sql } from "drizzle-orm";
-import { cartTotal, describeCart } from "@/domain/cart";
+import { cartTotal, describeCart, type Cart } from "@/domain/cart";
 import { findDream, type DreamSlug } from "@/domain/catalog";
 import { cents, formatUsd } from "@/domain/money";
 import { cleanSummary, type ManagerTopic } from "@/domain/manager-request";
 import { advance, nextStatus, type OrderStatus } from "@/domain/order";
 import { fail, ok } from "@/domain/result";
-import { db } from "../db/client";
+import { db, type Tx } from "../db/client";
 import { cartLines, events, orderItems, orders } from "../db/schema";
 import { notifyBuyers } from "../telegram/notify";
 import { loadCart, sessionStock } from "./cart";
@@ -16,6 +16,37 @@ import type { Session } from "./sessions";
 /** If nobody presses a button in the manager feed, an order moves on by itself after this delay. */
 export const AUTO_ADVANCE_SECONDS = 20;
 const LOW_STOCK = 2;
+
+/** Who an order belongs to: a buyer's session, or nobody for the shop's own background orders. */
+export interface OrderOwner {
+  sessionId: string | null;
+  channel: "web" | "telegram";
+  alias: string;
+  telegramChatId: number | null;
+}
+
+/**
+ * Writes an order, its items and its feed events inside the caller's transaction.
+ * Shared by checkout and by the shop's background activity, so both look the same in the feed.
+ */
+export async function recordOrder(tx: Tx, owner: OrderOwner, cart: Cart, stockAfter?: (slug: DreamSlug) => number) {
+  const total = cartTotal(cart);
+  const [order] = await tx.insert(orders).values({ ...owner, totalCents: total }).returning();
+  await tx.insert(orderItems).values(
+    cart.map((line) => ({ orderNumber: order.number, slug: line.slug, qty: line.qty, night: line.night, priceCents: findDream(line.slug)!.price })),
+  );
+  const view = describeCart(cart);
+  await tx.insert(events).values([
+    { orderNumber: order.number, type: "order_created", payload: { alias: owner.alias, items: view.items, total: view.total } },
+    { orderNumber: order.number, type: "payment_passed", payload: { total: view.total } },
+    ...(stockAfter
+      ? cart
+          .filter((line) => stockAfter(line.slug) <= LOW_STOCK)
+          .map((line) => ({ type: "low_stock" as const, payload: { slug: line.slug, name: findDream(line.slug)!.name.ru, left: stockAfter(line.slug) } }))
+      : []),
+  ]);
+  return { order, view, total };
+}
 
 /**
  * Places the order in one transaction: re-checks stock, writes the order and its items,
@@ -30,23 +61,13 @@ export async function placeOrder(session: Session) {
     const short = cart.find((line) => line.qty > stock[line.slug]);
     if (short) return fail("not_enough_stock" as const, { slug: short.slug, available: stock[short.slug] });
 
-    const total = cartTotal(cart);
-    const [order] = await tx
-      .insert(orders)
-      .values({ sessionId: session.id, channel: session.channel, alias: session.alias, telegramChatId: session.telegramChatId, totalCents: total })
-      .returning();
-    await tx.insert(orderItems).values(
-      cart.map((line) => ({ orderNumber: order.number, slug: line.slug, qty: line.qty, night: line.night, priceCents: findDream(line.slug)!.price })),
+    const qtyOf = (slug: DreamSlug) => cart.find((line) => line.slug === slug)?.qty ?? 0;
+    const { order, view, total } = await recordOrder(
+      tx,
+      { sessionId: session.id, channel: session.channel, alias: session.alias, telegramChatId: session.telegramChatId },
+      cart,
+      (slug) => stock[slug] - qtyOf(slug),
     );
-
-    const view = describeCart(cart);
-    await tx.insert(events).values([
-      { orderNumber: order.number, type: "order_created", payload: { alias: session.alias, items: view.items, total: view.total } },
-      { orderNumber: order.number, type: "payment_passed", payload: { total: view.total } },
-      ...cart
-        .filter((line) => stock[line.slug] - line.qty <= LOW_STOCK)
-        .map((line) => ({ type: "low_stock" as const, payload: { slug: line.slug, name: findDream(line.slug)!.name.ru, left: stock[line.slug] - line.qty } })),
-    ]);
     await tx.delete(cartLines).where(eq(cartLines.sessionId, session.id));
 
     return ok({ number: order.number, status: order.status, total: formatUsd(total), items: view.items, createdAt: order.createdAt.toISOString() } satisfies OrderView);
