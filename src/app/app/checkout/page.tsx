@@ -6,6 +6,7 @@ import { useState } from "react";
 import { coverPath } from "@/domain/catalog";
 import { api } from "@/ui/api";
 import { EmptyState } from "@/ui/components/EmptyState";
+import { SkeletonCards } from "@/ui/components/Skeleton";
 import { Icon, type IconName } from "@/ui/components/Icon";
 import { TopBar } from "@/ui/components/TopBar";
 import { errorMessage, nightLabel, typo } from "@/ui/format";
@@ -48,7 +49,16 @@ export default function CheckoutPage() {
     router.push(`/app/orders?placed=${result.data.number}`);
   }
 
-  if (ready && cart.items.length === 0 && !busy) {
+  if (!ready) {
+    return (
+      <>
+        <TopBar title="Оформление" back={{ href: "/app/cart", label: "В корзину" }} />
+        <SkeletonCards count={2} lines={2} label="Загружаем заказ…" />
+      </>
+    );
+  }
+
+  if (cart.items.length === 0 && !busy) {
     return (
       <>
         <TopBar title="Оформление" back={{ href: "/app/cart", label: "В корзину" }} />
@@ -61,7 +71,7 @@ export default function CheckoutPage() {
     <>
       <TopBar title="Оформление" back={{ href: "/app/cart", label: "В корзину" }} />
 
-      <section className={styles.card} aria-labelledby="checkout-items">
+      <section className={`${styles.card} appear`} aria-labelledby="checkout-items">
         <h2 id="checkout-items">Ваш заказ</h2>
         <ul className={styles.items}>
           {cart.items.map((item) => (

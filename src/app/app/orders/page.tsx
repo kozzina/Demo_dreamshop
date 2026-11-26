@@ -9,6 +9,7 @@ import { ORDER_STATUSES } from "@/domain/order";
 import type { OrderView } from "@/shared/contract";
 import { api } from "@/ui/api";
 import { EmptyState } from "@/ui/components/EmptyState";
+import { SkeletonCards } from "@/ui/components/Skeleton";
 import { Icon } from "@/ui/components/Icon";
 import { TopBar } from "@/ui/components/TopBar";
 import { STATUS_NOTE } from "@/ui/content";
@@ -51,9 +52,7 @@ function Orders() {
     return (
       <>
         {bar}
-        <p className={styles.hint} role="status">
-          Загружаем заказы…
-        </p>
+        <SkeletonCards count={2} lines={2} label="Загружаем заказы…" />
       </>
     );
   }
@@ -78,7 +77,7 @@ function Orders() {
           <p>Статус меняется сам — следите здесь или в{"\u00a0"}чате с{"\u00a0"}ботом.</p>
         </section>
       )}
-      <ul className={styles.list}>
+      <ul className={`${styles.list} appear`}>
         {orders.map((order) => (
           <OrderCard key={order.number} order={order} highlight={order.number === placed} />
         ))}

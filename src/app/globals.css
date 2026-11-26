@@ -18,3 +18,21 @@ body {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Loaded content fades in softly where a skeleton stood. */
+.appear {
+  animation: appear 360ms ease-out both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appear {
+    animation: none;
+  }
+}

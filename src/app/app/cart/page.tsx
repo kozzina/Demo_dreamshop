@@ -8,6 +8,7 @@ import { coverPath } from "@/domain/catalog";
 import type { CartItem } from "@/shared/contract";
 import { api } from "@/ui/api";
 import { EmptyState } from "@/ui/components/EmptyState";
+import { SkeletonCards } from "@/ui/components/Skeleton";
 import { Icon } from "@/ui/components/Icon";
 import { Stepper } from "@/ui/components/Stepper";
 import { TopBar } from "@/ui/components/TopBar";
@@ -21,7 +22,16 @@ export default function CartPage() {
   const { cart, changeCart, ready, cartCount } = useShop();
   const [confirmClear, setConfirmClear] = useState(false);
 
-  if (ready && cart.items.length === 0) {
+  if (!ready) {
+    return (
+      <>
+        <TopBar title="Корзина" />
+        <SkeletonCards count={2} lines={1} label="Загружаем корзину…" />
+      </>
+    );
+  }
+
+  if (cart.items.length === 0) {
     return (
       <>
         <TopBar title="Корзина" />
@@ -45,9 +55,11 @@ export default function CartPage() {
         {cartCount} {plural(cartCount, ["сон", "сна", "снов"])} на {nights.length} {plural(nights.length, ["ночь", "ночи", "ночей"])}
       </p>
 
+      <div className="appear">
       {nights.map((night) => (
         <NightCard key={night} night={night} items={cart.items.filter((item) => item.night === night)} />
       ))}
+      </div>
 
       <button type="button" className={styles.clear} onClick={clear} onBlur={() => setConfirmClear(false)}>
         {confirmClear ? "Точно очистить? Нажмите ещё раз" : "Очистить корзину"}

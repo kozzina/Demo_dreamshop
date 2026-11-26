@@ -1,0 +1,77 @@
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+/* The whole card breathes gently; blocks inside carry a slow shimmer. */
+@keyframes breathe {
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.head,
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.headText {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+}
+
+.block {
+  display: block;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, rgb(124 92 224 / 0.08) 30%, rgb(255 255 255 / 0.9) 50%, rgb(124 92 224 / 0.08) 70%) 0 0 / 300% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.thin {
+  height: 10px;
+}
+
+.circle {
+  flex: none;
+  width: 40px;
+  height: 40px;
+}
+
+.thumb {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .block {
+    animation: none;
+  }
+}
