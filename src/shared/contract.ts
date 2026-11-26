@@ -17,6 +17,12 @@ export interface CatalogItem {
   cover: string;
 }
 
+/** Static texts of a dream from the knowledge base: server pages pass them to list cards. */
+export interface DreamBlurb {
+  teaser: string;
+  mood: string[];
+}
+
 export interface CartItem {
   slug: DreamSlug;
   name: string;

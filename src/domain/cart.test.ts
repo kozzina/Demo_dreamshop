@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CATALOG, type DreamSlug } from "./catalog";
-import { addToCart, cartTotal, setLine, type Cart, type Stock } from "./cart";
+import { addToCart, cartTotal, nightLoad, setLine, type Cart, type Stock } from "./cart";
 import { formatUsd } from "./money";
 
 const stock = Object.fromEntries(CATALOG.map((dream) => [dream.slug, dream.stock])) as Record<DreamSlug, number>;
@@ -55,5 +55,13 @@ describe("cart rules", () => {
     expect(moved.ok && moved.value[0].night).toBe(TOMORROW);
     const removed = setLine(cart, stock, "library-night", 0, TONIGHT);
     expect(removed.ok && removed.value).toEqual([]);
+  });
+});
+
+describe("night load", () => {
+  it("counts dreams and minutes of one night only", () => {
+    const cart = cartOf(["forest-cabin", 1, TONIGHT], ["exam-passed", 2, TONIGHT], ["no-alarm-sleep", 1, TOMORROW]);
+    expect(nightLoad(cart, TONIGHT)).toEqual({ dreams: 2, minutes: 110, wholeNight: false });
+    expect(nightLoad(cart, TOMORROW)).toEqual({ dreams: 1, minutes: 480, wholeNight: true });
   });
 });

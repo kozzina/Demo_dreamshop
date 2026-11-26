@@ -52,7 +52,8 @@ export function addToCart(cart: Cart, stock: Stock, slug: string, qty: number, n
   return setLine(cart, stock, slug, (current?.qty ?? 0) + qty, current?.night ?? night);
 }
 
-function nightConflict(others: Cart, slug: DreamSlug, night: Night): NightConflict | null {
+/** Why this dream cannot join the other lines of that night, or null if it fits. */
+export function nightConflict(others: Cart, slug: DreamSlug, night: Night): NightConflict | null {
   const sameNight = others.filter((line) => line.night === night);
   if (sameNight.length === 0) return null;
 
@@ -61,6 +62,16 @@ function nightConflict(others: Cart, slug: DreamSlug, night: Night): NightConfli
   if (dreams.length > MAX_DREAMS_PER_NIGHT) return "too_many_dreams";
   if (dreams.reduce((total, dream) => total + dream.minutes, 0) > MAX_MINUTES_PER_NIGHT) return "too_long";
   return null;
+}
+
+/** How full a night is: shown in the cart so the rules are visible before they bite. */
+export function nightLoad(cart: Cart, night: Night): { dreams: number; minutes: number; wholeNight: boolean } {
+  const dreams = cart.filter((line) => line.night === night).map((line) => findDream(line.slug)!);
+  return {
+    dreams: dreams.length,
+    minutes: dreams.reduce((total, dream) => total + dream.minutes, 0),
+    wholeNight: dreams.some((dream) => dream.wholeNight),
+  };
 }
 
 export function cartTotal(cart: Cart): Cents {

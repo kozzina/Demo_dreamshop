@@ -23,7 +23,22 @@ export function nightParts(night: string): { day: string; date: string } {
   return { day, date: DAY_MONTH.format(date) };
 }
 
+/** Compact label for night dropdowns: «Сегодня», «Завтра», «пт, 28 нояб.». */
+export function shortNightLabel(night: string): string {
+  const { day, date } = nightParts(night);
+  return day === "Сегодня" || day === "Завтра" ? day : `${day}, ${date}`;
+}
+
 export const bookableNights = (): string[] => Array.from({ length: BOOKING_WINDOW_DAYS + 1 }, (_, i) => addDays(today(), i));
+
+/** Russian plural: plural(3, ["сон", "сна", "снов"]) → «сна». */
+export function plural(n: number, [one, few, many]: readonly [string, string, string]): string {
+  const tens = n % 100;
+  const units = n % 10;
+  if (tens >= 11 && tens <= 14) return many;
+  if (units === 1) return one;
+  return units >= 2 && units <= 4 ? few : many;
+}
 
 export const minutesLabel = (minutes: number): string =>
   minutes >= 60 ? `${Math.floor(minutes / 60)} ч${minutes % 60 ? ` ${minutes % 60} мин` : ""}` : `${minutes} мин`;

@@ -10,5 +10,6 @@ describe("dream descriptions from the knowledge base", () => {
     expect(forest?.scenes[0]).toBe("тропинка через сосновый лес");
     expect(dreamDetails("no-alarm-sleep")?.scenes.length).toBeGreaterThan(0);
     expect(dreamDetails("first-snow")?.notes).toMatch(/декабре/);
+    expect(dreamDetails("flight-over-city")?.mood).toEqual(["лёгкость", "свобода", "восторг"]);
   });
 });

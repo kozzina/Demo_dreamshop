@@ -1,7 +1,8 @@
 import "server-only";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import type { DreamSlug } from "@/domain/catalog";
+import { CATALOG, type DreamSlug } from "@/domain/catalog";
+import type { DreamBlurb } from "@/shared/contract";
 
 /**
  * content/knowledge.md is the single source of the shop's texts: the mini app shows dream
@@ -14,6 +15,8 @@ export const knowledgeText = (): string => (cache ??= readFileSync(KNOWLEDGE_PAT
 
 export interface DreamDetails {
   teaser: string;
+  /** «лёгкость, свобода, восторг» from the dream's first line. */
+  mood: string[];
   scenes: string[];
   feelings?: string;
   goodFor?: string;
@@ -21,7 +24,8 @@ export interface DreamDetails {
   notes?: string;
 }
 
-const FIELDS: Record<string, keyof DreamDetails> = {
+/** Bullet fields of a dream section; mood sits on the first line and is read separately. */
+const FIELDS: Record<string, Exclude<keyof DreamDetails, "mood">> = {
   "Тизер": "teaser",
   "Сюжет по сценам": "scenes",
   "Что внутри": "scenes",
@@ -33,7 +37,8 @@ const FIELDS: Record<string, keyof DreamDetails> = {
 
 /** Parses one «### 2.x» section of the catalogue: bullet lines of the form «- **Field:** value». */
 export function parseDreamSection(section: string): DreamDetails {
-  const details: DreamDetails = { teaser: "", scenes: [] };
+  const mood = section.match(/\*\*Настроение:\*\* ([^\n]+)/)?.[1] ?? "";
+  const details: DreamDetails = { teaser: "", mood: mood.split(/,\s*/).filter(Boolean), scenes: [] };
   for (const line of section.split("\n")) {
     const match = line.match(/^- \*\*(.+?):\*\* (.+)$/);
     const field = match && FIELDS[match[1]];
@@ -56,4 +61,14 @@ export function dreamDetails(slug: DreamSlug): DreamDetails | null {
     }
   }
   return details.get(slug) ?? null;
+}
+
+/** Teaser and mood of every dream, for list cards. */
+export function dreamBlurbs(): Record<DreamSlug, DreamBlurb> {
+  return Object.fromEntries(
+    CATALOG.map((dream) => {
+      const details = dreamDetails(dream.slug);
+      return [dream.slug, { teaser: details?.teaser ?? "", mood: details?.mood ?? [] }];
+    }),
+  ) as Record<DreamSlug, DreamBlurb>;
 }
