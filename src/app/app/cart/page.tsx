@@ -7,81 +7,98 @@ import { MAX_QTY_PER_DREAM } from "@/domain/cart";
 import { coverPath } from "@/domain/catalog";
 import type { CartItem } from "@/shared/contract";
 import { api } from "@/ui/api";
-import { errorMessage, nightLabel } from "@/ui/format";
+import { EmptyState } from "@/ui/components/EmptyState";
+import { Icon } from "@/ui/components/Icon";
+import { Stepper } from "@/ui/components/Stepper";
+import { errorMessage, nightLabel, typo } from "@/ui/format";
 import { useBookableNights } from "@/ui/use-bookable-nights";
 import { useShop } from "@/ui/shop-context";
 import { haptic } from "@/ui/telegram";
 import styles from "./cart.module.css";
 
 export default function CartPage() {
-  const { cart, catalog, changeCart, ready } = useShop();
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const bookable = useBookableNights();
-
-  async function update(item: CartItem, qty: number, night?: string) {
-    const error = await changeCart(() => api.updateCart(item.slug, qty, night));
-    haptic(error ? "error" : "tap");
-    setErrors((prev) => ({ ...prev, [item.slug]: error ? errorMessage(error) : "" }));
-  }
+  const { cart, changeCart, ready } = useShop();
+  const [confirmClear, setConfirmClear] = useState(false);
 
   if (ready && cart.items.length === 0) {
-    return (
-      <div className={styles.empty}>
-        <h1>Корзина пуста</h1>
-        <p>Загляните в каталог — там есть сны на любое настроение.</p>
-        <Link href="/app" className={styles.primary}>В каталог</Link>
-      </div>
-    );
+    return <EmptyState icon="bag" title="Корзина пуста" text="В каталоге есть сны на любое настроение." action={{ href: "/app", label: "В каталог" }} />;
   }
 
   const nights = [...new Set(cart.items.map((item) => item.night))].sort();
 
+  async function clear() {
+    if (!confirmClear) return setConfirmClear(true);
+    await changeCart(api.clearCart);
+    setConfirmClear(false);
+  }
+
   return (
     <>
       <h1 className={styles.title}>Корзина</h1>
-      <p className={styles.rules}>На одну ночь — до двух снов и до 6 часов. «Сон без будильника» — на отдельную ночь.</p>
+      <p className={styles.rules}>
+        <Icon name="moon" size={18} />
+        <span>{typo("На одну ночь — до двух снов и до 6 часов. «Сон без будильника» — на отдельную\u00a0ночь.")}</span>
+      </p>
 
       {nights.map((night) => (
-        <section key={night} className={styles.night}>
-          <h2>{nightLabel(night)}</h2>
+        <section key={night} className={styles.night} aria-labelledby={`night-${night}`}>
+          <h2 id={`night-${night}`}>{nightLabel(night)}</h2>
           <ul>
             {cart.items
               .filter((item) => item.night === night)
-              .map((item) => {
-                const inStock = catalog.find((d) => d.slug === item.slug)?.inStock ?? item.qty;
-                return (
-                  <li key={item.slug} className={styles.line}>
-                    <span className={styles.thumb}>
-                      <Image src={coverPath(item.slug)} alt="" fill sizes="64px" />
-                    </span>
-                    <div className={styles.info}>
-                      <Link href={`/app/dream/${item.slug}`} className={styles.name}>{item.name}</Link>
-                      <span className={styles.price}>{item.price} × {item.qty}</span>
-                      <select aria-label={`Ночь для «${item.name}»`} value={item.night} onChange={(e) => update(item, item.qty, e.target.value)}>
-                        {bookable.map((n) => (
-                          <option key={n} value={n}>{nightLabel(n)}</option>
-                        ))}
-                      </select>
-                      {errors[item.slug] && <p className={styles.error} role="alert">{errors[item.slug]}</p>}
-                    </div>
-                    <div className={styles.stepper} role="group" aria-label={`Количество «${item.name}»`}>
-                      <button type="button" aria-label="Меньше" onClick={() => update(item, item.qty - 1)}>{item.qty === 1 ? "×" : "−"}</button>
-                      <output>{item.qty}</output>
-                      <button type="button" aria-label="Больше" disabled={item.qty >= Math.min(MAX_QTY_PER_DREAM, inStock)} onClick={() => update(item, item.qty + 1)}>+</button>
-                    </div>
-                  </li>
-                );
-              })}
+              .map((item) => (
+                <CartLine key={item.slug} item={item} />
+              ))}
           </ul>
         </section>
       ))}
 
+      <button type="button" className={styles.clear} onClick={clear} onBlur={() => setConfirmClear(false)}>
+        {confirmClear ? "Точно очистить? Нажмите ещё раз" : "Очистить корзину"}
+      </button>
+
       <div className={styles.summary}>
-        <span>Итого</span>
-        <b>{cart.total}</b>
+        <div>
+          <span className={styles.totalLabel}>Итого</span>
+          <b className={styles.total}>{cart.total}</b>
+        </div>
+        <Link href="/app/checkout" className={styles.primary}>Оформить</Link>
       </div>
-      <Link href="/app/checkout" className={styles.primary}>Оформить</Link>
-      <button type="button" className={styles.secondary} onClick={() => changeCart(api.clearCart)}>Очистить корзину</button>
     </>
+  );
+}
+
+function CartLine({ item }: { item: CartItem }) {
+  const { catalog, changeCart } = useShop();
+  const bookable = useBookableNights();
+  const [error, setError] = useState("");
+  const inStock = catalog.find((d) => d.slug === item.slug)?.inStock ?? item.qty;
+
+  async function update(qty: number, night?: string) {
+    const result = await changeCart(() => api.updateCart(item.slug, qty, night));
+    haptic(result ? "error" : "tap");
+    setError(result ? errorMessage(result) : "");
+  }
+
+  return (
+    <li className={styles.line}>
+      <Link href={`/app/dream/${item.slug}`} className={styles.thumb} tabIndex={-1} aria-hidden>
+        <Image src={coverPath(item.slug)} alt="" fill sizes="72px" />
+      </Link>
+      <div className={styles.info}>
+        <Link href={`/app/dream/${item.slug}`} className={styles.name}>{item.name}</Link>
+        <span className={styles.price}>{item.price} за шт.</span>
+        <label className={styles.select}>
+          <span className="visually-hidden">Ночь для «{item.name}»</span>
+          <select value={item.night} onChange={(e) => update(item.qty, e.target.value)}>
+            {bookable.map((n) => (
+              <option key={n} value={n}>{nightLabel(n)}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <Stepper label={`Количество «${item.name}»`} value={item.qty} min={1} max={Math.min(MAX_QTY_PER_DREAM, inStock)} onChange={(qty) => update(qty)} removeAtMin />
+      {error && <p className={styles.error} role="alert">{error}</p>}
+    </li>
   );
 }

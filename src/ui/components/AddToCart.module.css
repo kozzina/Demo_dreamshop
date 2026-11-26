@@ -1,91 +1,76 @@
 .box {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: end;
-  padding: 14px;
+  gap: 16px;
+  margin: 20px 0 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
 }
 
-.field {
-  display: grid;
-  gap: 4px;
-  font-size: 13px;
-  color: var(--hint);
-}
-
-.field select {
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
-  font-size: 15px;
-}
-
-.stepper {
+.row {
   display: flex;
+  gap: 10px;
   align-items: center;
-  gap: 4px;
-}
-
-.stepper button {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.stepper button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.stepper output {
-  min-width: 24px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
 }
 
 .primary {
-  grid-column: 1 / -1;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   min-height: 48px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 14px;
-  background: var(--accent);
-  color: var(--accent-text);
+  border-radius: 999px;
+  background: var(--dawn);
+  color: var(--on-dawn);
   font: inherit;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: var(--press), opacity 160ms;
+}
+
+.primary:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .primary:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
+  cursor: default;
+}
+
+.price {
+  font-weight: 600;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
 }
 
 .ok,
 .error {
-  grid-column: 1 / -1;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 20px;
+  margin: -6px 0 0;
   font-size: 14px;
 }
 
+/* The live region stays in the tree so the first message is announced; empty, it takes no space. */
+.ok:empty,
+.error:empty {
+  position: absolute;
+}
+
 .ok {
-  color: var(--text);
+  color: var(--success);
 }
 
 .ok a {
-  color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
 }
 
 .error {
@@ -93,8 +78,9 @@
 }
 
 .out {
-  padding: 14px;
-  border-radius: var(--radius);
+  margin: 20px 0 8px;
+  padding: 14px 16px;
+  border-radius: var(--radius-s);
   background: var(--surface);
-  color: var(--hint);
+  color: var(--muted);
 }

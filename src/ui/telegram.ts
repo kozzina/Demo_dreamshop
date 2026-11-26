@@ -7,6 +7,9 @@ interface TelegramWebApp {
   expand(): void;
   initData: string;
   isVersionAtLeast(version: string): boolean;
+  setHeaderColor(color: string): void;
+  setBackgroundColor(color: string): void;
+  setBottomBarColor?(color: string): void;
   HapticFeedback?: { impactOccurred(style: "light" | "medium"): void; notificationOccurred(type: "success" | "error"): void };
 }
 
@@ -20,6 +23,8 @@ const SDK_URL = "https://telegram.org/js/telegram-web-app.js";
 /** Telegram passes launch data in the URL hash; the SDK keeps a copy here for reloads. */
 const LAUNCH_HASH = "tgWebAppData=";
 const LAUNCH_STORAGE_KEY = "__telegram__initParams";
+/** The shop's night colour (--bg in shop.module.css): Telegram paints its header and edges in it. */
+const SHOP_BACKGROUND = "#0b0a1a";
 
 const webApp = (): TelegramWebApp | undefined => (typeof window === "undefined" ? undefined : window.Telegram?.WebApp);
 
@@ -35,14 +40,24 @@ export function loadTelegram(): Promise<void> {
     const script = document.createElement("script");
     script.src = SDK_URL;
     script.onload = () => {
-      webApp()?.ready();
-      webApp()?.expand();
+      const app = webApp();
+      app?.ready();
+      app?.expand();
+      if (app) paintChrome(app);
       resolve();
     };
     script.onerror = () => resolve();
     document.head.append(script);
   });
   return loading;
+}
+
+/** Custom header colours arrived in Mini Apps 6.1, the bottom bar colour in 7.10. */
+function paintChrome(app: TelegramWebApp): void {
+  if (!app.isVersionAtLeast("6.1")) return;
+  app.setHeaderColor(SHOP_BACKGROUND);
+  app.setBackgroundColor(SHOP_BACKGROUND);
+  if (app.isVersionAtLeast("7.10")) app.setBottomBarColor?.(SHOP_BACKGROUND);
 }
 
 /** Signed launch data; empty outside Telegram. */

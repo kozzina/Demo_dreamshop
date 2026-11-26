@@ -1,0 +1,78 @@
+.picker {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 2px 16px 4px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, #000 85%, transparent);
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.night {
+  position: relative;
+  display: grid;
+  flex: none;
+  justify-items: center;
+  align-content: center;
+  min-width: 76px;
+  min-height: 60px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--surface-2);
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: background-color 160ms, color 160ms, var(--press);
+}
+
+.night:active {
+  transform: scale(0.96);
+}
+
+.night input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.night:has(input:focus-visible) {
+  outline: 2px solid var(--dawn);
+  outline-offset: 2px;
+}
+
+.night:has(input:checked) {
+  border-color: transparent;
+  background: var(--dawn);
+  color: var(--on-dawn);
+}
+
+.day {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.date {
+  font-size: 12px;
+  opacity: 0.75;
+}

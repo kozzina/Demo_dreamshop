@@ -1,19 +1,31 @@
 .title {
-  margin: 8px 0 12px;
-  font-size: 24px;
-  font-weight: 650;
+  margin: 12px 0 16px;
+  font-family: var(--serif);
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.05;
 }
 
 .hint {
-  color: var(--hint);
+  color: var(--muted);
 }
 
 .placed {
-  margin: 0 0 12px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: var(--accent-soft);
+  display: flex;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-s);
+  background: rgb(159 227 193 / 0.12);
+  color: var(--text);
   font-size: 14px;
+  line-height: 1.45;
+}
+
+.placed svg {
+  flex: none;
+  color: var(--success);
 }
 
 .list {
@@ -25,78 +37,162 @@
 }
 
 .order {
-  display: grid;
-  gap: 10px;
-  padding: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
-  transition: box-shadow 0.3s;
 }
 
 .order[data-highlight] {
-  box-shadow: 0 0 0 2px var(--accent);
+  border-color: rgb(255 200 162 / 0.45);
+  box-shadow: 0 0 0 4px var(--dawn-soft);
 }
 
 .head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: baseline;
+  gap: 12px;
 }
 
 .status {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--dawn-soft);
+  color: var(--dawn);
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.progress {
+.status[data-status="delivered"] {
+  background: rgb(159 227 193 / 0.12);
+  color: var(--success);
+}
+
+.status[data-status="cancelled"] {
+  background: rgb(255 159 176 / 0.12);
+  color: var(--danger);
+}
+
+/* Five labelled steps on one line; the dawn line fills up to the current step. */
+.steps {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  margin: 0;
+  margin: 18px 0 8px;
   padding: 0;
   list-style: none;
 }
 
-.progress li {
-  height: 4px;
-  border-radius: 2px;
-  background: var(--line);
-  transition: background 0.4s;
+.steps::before,
+.steps::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--surface-2);
 }
 
-.progress li[data-done] {
-  background: var(--accent);
+.steps::after {
+  background: var(--dawn);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.items {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 14px;
-}
-
-.items span {
-  color: var(--hint);
-}
-
-.total {
-  justify-self: end;
-  font-weight: 600;
-}
-
-.empty {
+.steps li {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: 8px;
-  padding-top: 40px;
+  justify-items: center;
+  gap: 6px;
   text-align: center;
 }
 
-.empty h1 {
-  margin: 0;
-  font-size: 22px;
+.dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--surface-2);
+  border-radius: 999px;
+  background: var(--surface);
+  transition: background-color 300ms, border-color 300ms;
 }
 
-.empty a {
-  color: var(--accent);
+.steps li[data-done] .dot {
+  border-color: var(--dawn);
+  background: var(--dawn);
+}
+
+.steps li[aria-current="step"] .dot {
+  box-shadow: 0 0 0 4px var(--dawn-soft);
+}
+
+.stepNote {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.items {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.items li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.thumb {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.thumb img {
+  object-fit: cover;
+}
+
+.itemText {
+  display: grid;
+}
+
+.itemName {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.itemNight {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.total b {
+  color: var(--text);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
 }

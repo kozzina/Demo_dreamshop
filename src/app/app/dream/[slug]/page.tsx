@@ -6,6 +6,7 @@ import { CATALOG, coverPath, findDream } from "@/domain/catalog";
 import { formatUsd } from "@/domain/money";
 import { dreamDetails } from "@/server/knowledge";
 import { AddToCart } from "@/ui/components/AddToCart";
+import { Icon } from "@/ui/components/Icon";
 import { minutesLabel, typo } from "@/ui/format";
 import styles from "./dream.module.css";
 
@@ -18,7 +19,9 @@ export const generateStaticParams = () => CATALOG.map((dream) => ({ slug: dream.
 export default function DreamPage({ params }: PageProps<"/app/dream/[slug]">) {
   return (
     <article className={styles.dream}>
-      <Link href="/app" className={styles.back}>← Каталог</Link>
+      <Link href="/app" className={styles.back} aria-label="Назад в каталог">
+        <Icon name="back" size={20} />
+      </Link>
       <Suspense fallback={<div className={styles.cover} aria-hidden />}>
         <DreamDetails params={params} />
       </Suspense>
@@ -31,19 +34,26 @@ async function DreamDetails({ params }: Pick<PageProps<"/app/dream/[slug]">, "pa
   const dream = findDream(slug);
   const details = dream && dreamDetails(dream.slug);
   if (!dream || !details) notFound();
+  const price = formatUsd(dream.price);
 
   return (
     <>
       <div className={styles.cover}>
         <Image src={coverPath(dream.slug)} alt="" fill sizes="(max-width: 640px) 100vw, 640px" preload loading="eager" />
       </div>
+      <p className={styles.genre}>{dream.genre}</p>
       <h1 className={styles.name}>{dream.name.ru}</h1>
-      <p className={styles.meta}>
-        {dream.genre} · {minutesLabel(dream.minutes)} · {dream.age} · <b>{formatUsd(dream.price)}</b>
-      </p>
+      <ul className={styles.facts} aria-label="Коротко">
+        <li>
+          <Icon name="clock" size={16} />
+          {dream.wholeNight ? "Вся ночь" : minutesLabel(dream.minutes)}
+        </li>
+        <li>{dream.age}</li>
+        <li className={styles.price}>{price}</li>
+      </ul>
       <p className={styles.teaser}>{typo(details.teaser)}</p>
 
-      <AddToCart slug={dream.slug} />
+      <AddToCart slug={dream.slug} price={price} />
 
       {details.scenes.length > 0 && (
         <section className={styles.section}>

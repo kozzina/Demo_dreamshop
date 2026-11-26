@@ -12,6 +12,17 @@ export function nightLabel(night: string): string {
   return DAY.format(new Date(`${night}T00:00:00Z`));
 }
 
+const WEEKDAY = new Intl.DateTimeFormat("ru", { weekday: "short", timeZone: "UTC" });
+const DAY_MONTH = new Intl.DateTimeFormat("ru", { day: "numeric", month: "short", timeZone: "UTC" });
+
+/** Two lines for the night strip: «Сегодня» / «26 нояб.», «пт» / «28 нояб.». */
+export function nightParts(night: string): { day: string; date: string } {
+  const date = new Date(`${night}T00:00:00Z`);
+  const first = today();
+  const day = night === first ? "Сегодня" : night === addDays(first, 1) ? "Завтра" : WEEKDAY.format(date);
+  return { day, date: DAY_MONTH.format(date) };
+}
+
 export const bookableNights = (): string[] => Array.from({ length: BOOKING_WINDOW_DAYS + 1 }, (_, i) => addDays(today(), i));
 
 export const minutesLabel = (minutes: number): string =>

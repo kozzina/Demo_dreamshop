@@ -1,45 +1,68 @@
+/* Floating tab bar: stays clear of the home indicator and leaves the page edges free. */
 .nav {
   position: fixed;
-  inset: auto 0 0 0;
-  z-index: 10;
+  inset: auto 0 0;
+  z-index: 20;
+  padding: 0 16px calc(12px + env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+
+.bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  backdrop-filter: blur(14px);
-  border-top: 1px solid var(--line);
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(21 19 43 / 0.94);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  pointer-events: auto;
 }
 
 .tab {
-  position: relative;
   display: grid;
-  place-items: center;
-  min-height: 44px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--hint);
+  justify-items: center;
+  gap: 2px;
+  min-height: 52px;
+  padding: 6px 4px 4px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition: color 160ms, background-color 160ms, var(--press);
+}
+
+.tab:active {
+  transform: scale(0.96);
 }
 
 .tab[aria-current="page"] {
-  color: var(--accent);
-  background: var(--accent-soft);
+  background: var(--dawn-soft);
+  color: var(--dawn);
+}
+
+.icon {
+  position: relative;
+  display: grid;
 }
 
 .badge {
   position: absolute;
-  top: 4px;
-  right: calc(50% - 46px);
+  top: -5px;
+  right: -11px;
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
   border-radius: 9px;
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--dawn);
+  color: var(--on-dawn);
   font-size: 11px;
+  font-weight: 700;
   line-height: 18px;
   text-align: center;
 }
