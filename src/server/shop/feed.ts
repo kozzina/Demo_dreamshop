@@ -3,19 +3,10 @@ import { desc, eq, gt } from "drizzle-orm";
 import { db } from "../db/client";
 import { events, orders } from "../db/schema";
 import { advanceStaleOrders } from "./orders";
+import type { FeedEvent } from "@/shared/contract";
 
 export const FEED_SIZE = 50;
 
-export interface FeedEvent {
-  id: number;
-  type: (typeof events.$inferSelect)["type"];
-  orderNumber: number | null;
-  orderStatus: string | null;
-  /** The viewer's own order — shown as «Ваш заказ». */
-  mine: boolean;
-  payload: unknown;
-  createdAt: string;
-}
 
 /**
  * The shared manager feed: the latest events of all buyers, newest first.
@@ -36,7 +27,7 @@ export async function listFeed(viewerSessionId: string | null, afterId = 0): Pro
     orderNumber: event.orderNumber,
     orderStatus,
     mine: viewerSessionId !== null && sessionId === viewerSessionId,
-    payload: event.payload,
+    payload: (event.payload ?? {}) as Record<string, unknown>,
     createdAt: event.createdAt.toISOString(),
   }));
 }

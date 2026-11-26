@@ -1,0 +1,9 @@
+/* Telegram-like light chat. Global on purpose: this route is one screen and nothing else. */
+html:has(.tg) {
+  overscroll-behavior: none;
+  scrollbar-width: none;
+}
+
+html:has(.tg)::-webkit-scrollbar {
+  display: none;
+}

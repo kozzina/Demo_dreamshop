@@ -44,6 +44,24 @@ export interface OrderView {
   createdAt: string;
 }
 
+export interface ManagerStats {
+  ordersToday: number;
+  totalToday: string;
+}
+
+/** An event of the shared manager feed, newest first from the API. */
+export interface FeedEvent {
+  id: number;
+  type: "order_created" | "status_changed" | "low_stock" | "manager_called" | "payment_passed";
+  orderNumber: number | null;
+  /** Current status of the event's order, so old messages show where the order is now. */
+  orderStatus: OrderStatus | null;
+  /** The viewer's own order: shown as «Ваш заказ». */
+  mine: boolean;
+  payload: Record<string, unknown>;
+  createdAt: string;
+}
+
 /** One visible line of the chat with the assistant. */
 export interface ChatLine {
   role: "buyer" | "assistant";

@@ -1,4 +1,5 @@
-import type { ApiError, CartView, CatalogItem, ChatLine, ChatReply, OrderView } from "@/shared/contract";
+import type { OrderStatus } from "@/domain/order";
+import type { ApiError, CartView, CatalogItem, ChatLine, ChatReply, FeedEvent, ManagerStats, OrderView } from "@/shared/contract";
 
 /** Typed client for the shop API. Errors come back as values, not exceptions: the UI shows them. */
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; error: ApiError };
@@ -30,6 +31,9 @@ export const api = {
   clearCart: () => request<CartView>("DELETE", "/api/cart"),
   orders: () => request<OrderView[]>("GET", "/api/orders"),
   placeOrder: () => request<OrderView>("POST", "/api/orders"),
+  feed: (after = 0) => request<FeedEvent[]>("GET", `/api/feed${after ? `?after=${after}` : ""}`),
+  managerStats: () => request<ManagerStats>("GET", "/api/manager/stats"),
+  advanceOrder: (number: number, status: OrderStatus) => request<{ number: number; status: OrderStatus }>("POST", `/api/manager/orders/${number}`, { status }),
   chat: () => request<ChatLine[]>("GET", "/api/chat"),
   sendChat: (text: string) => request<ChatReply>("POST", "/api/chat", { text }),
   requestCertificate: (amountCents: number) => request<{ called: true }>("POST", "/api/certificates", { amountCents }),
