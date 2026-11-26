@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { AssistantSheet } from "./components/AssistantSheet";
+import { listenForHoodSwitch } from "./hood";
 
 const AssistantContext = createContext<{ openAssistant: () => void } | null>(null);
 
@@ -9,6 +10,8 @@ const AssistantContext = createContext<{ openAssistant: () => void } | null>(nul
 export function AssistantProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const value = useMemo(() => ({ openAssistant: () => setOpen(true) }), []);
+  // Embedded in the case page, the page's «Показать, как работает» switch reaches the chat.
+  useEffect(listenForHoodSwitch, []);
   return (
     <AssistantContext.Provider value={value}>
       {children}
