@@ -26,9 +26,9 @@ export const config = {
     webhookSecret: () => required("TELEGRAM_WEBHOOK_SECRET"),
   },
   assistant: {
-    apiKey: () => required("OPENROUTER_API_KEY"),
-    model: process.env.ASSISTANT_MODEL ?? "anthropic/claude-haiku-5.5",
-    fallbackModel: process.env.ASSISTANT_FALLBACK_MODEL ?? "z-ai/glm-5.3-flash",
+    apiKey: () => required("ANTHROPIC_API_KEY"),
+    /** Chosen by the test runs in eval/: every dialog passed, no invented prices. */
+    model: process.env.ASSISTANT_MODEL ?? "claude-haiku-5-5",
     /** Messages one buyer can send to the assistant per day — enough to try it, cheap to run. */
     messagesPerDay: number("ASSISTANT_MESSAGES_PER_DAY", 20),
     /** Hard daily cap for all buyers together; the shop keeps working without the assistant. */
