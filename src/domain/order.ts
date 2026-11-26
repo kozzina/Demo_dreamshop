@@ -1,6 +1,6 @@
 import { fail, ok, type Result } from "./result";
 
-/** KNOWLEDGE.md, section 4. A status only moves forward; cancellation goes through a manager. */
+/** content/knowledge.md, section 4. A status only moves forward; cancellation goes through a manager. */
 export const ORDER_STATUSES = ["new", "accepted", "assembling", "delivering", "delivered"] as const;
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number] | "cancelled";
@@ -25,5 +25,5 @@ export function advance(current: OrderStatus, target: OrderStatus): Result<Order
   return ok(next);
 }
 
-/** Free cancellation while the workshop has not started (KNOWLEDGE.md, section 5). */
+/** Free cancellation while the workshop has not started (content/knowledge.md, section 5). */
 export const isFreeToCancel = (status: OrderStatus): boolean => status === "new" || status === "accepted";

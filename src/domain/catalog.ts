@@ -27,7 +27,7 @@ export interface Dream {
   wholeNight: boolean;
 }
 
-/** Catalogue from KNOWLEDGE.md, section 2. Descriptions live in the knowledge base, not here. */
+/** Catalogue from content/knowledge.md, section 2. Descriptions live in the knowledge base, not here. */
 export const CATALOG: readonly Dream[] = [
   { slug: "flight-over-city", name: { ru: "Полёт над городом", en: "Flight over the City" }, genre: "приключение", minutes: 40, price: cents(890), stock: 3, age: "12+", wholeNight: false },
   { slug: "childhood-sea", name: { ru: "Море из детства", en: "Childhood Sea" }, genre: "ностальгия", minutes: 60, price: cents(690), stock: 8, age: "0+", wholeNight: false },

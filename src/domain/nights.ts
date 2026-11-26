@@ -1,4 +1,4 @@
-/** A night can be booked from today up to 30 days ahead (KNOWLEDGE.md, section 3). */
+/** A night can be booked from today up to 30 days ahead (content/knowledge.md, section 3). */
 export const BOOKING_WINDOW_DAYS = 30;
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;

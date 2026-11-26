@@ -2,7 +2,7 @@ import { findDream, type DreamSlug } from "./catalog";
 import { formatUsd, multiply, sum, type Cents } from "./money";
 import { fail, ok, type Result } from "./result";
 
-/** Shop rules from KNOWLEDGE.md, section 3. */
+/** Shop rules from content/knowledge.md, section 3. */
 export const MAX_QTY_PER_DREAM = 5;
 export const MAX_DREAMS_PER_NIGHT = 2;
 export const MAX_MINUTES_PER_NIGHT = 360;
