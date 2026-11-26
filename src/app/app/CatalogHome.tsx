@@ -72,8 +72,8 @@ export function CatalogHome({ blurbs }: { blurbs: Record<DreamSlug, DreamBlurb> 
           <span className={styles.featureIcon}>
             <Icon name="layers" size={20} />
           </span>
-          <span className={styles.featureTitle}>Наборы</span>
-          <span className={styles.featureText}>{SETS.length} набора по{"\u00a0"}две ночи</span>
+          <span className={styles.featureTitle}>Наборы и подарки</span>
+          <span className={styles.featureText}>{SETS.length} набора и{"\u00a0"}сертификаты</span>
           <Icon name="arrow" size={18} />
         </Link>
         <Link href={`/app/dream/${TONIGHT_PICK}`} className={styles.smallCard}>

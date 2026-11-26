@@ -1,0 +1,141 @@
+.gift {
+  position: relative;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(90% 70% at 100% 0%, rgb(255 205 190 / 0.8), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, rgb(205 185 255 / 0.75), transparent 60%),
+    var(--surface);
+  overflow: hidden;
+}
+
+/* A soft ribbon across the corner, like on a gift card. */
+.ribbon {
+  position: absolute;
+  top: 18px;
+  right: -34px;
+  width: 140px;
+  height: 22px;
+  background: var(--accent-fill);
+  opacity: 0.85;
+  transform: rotate(35deg);
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gift h2 {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.text {
+  max-width: 34ch;
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+}
+
+.amount {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 56px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-s);
+  background: var(--surface-2);
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--press);
+}
+
+.amount:active {
+  transform: scale(0.96);
+}
+
+.amount input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.amount:has(input:checked) {
+  border-color: transparent;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 10px 22px -10px rgb(109 75 216 / 0.7);
+}
+
+.amount:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.send {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--press), opacity 160ms;
+}
+
+.send:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.send:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  color: var(--success);
+  font-weight: 600;
+}
+
+.error {
+  margin: 10px 0 0;
+  color: var(--danger);
+}
+
+.note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}

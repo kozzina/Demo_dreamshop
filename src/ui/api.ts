@@ -30,4 +30,5 @@ export const api = {
   clearCart: () => request<CartView>("DELETE", "/api/cart"),
   orders: () => request<OrderView[]>("GET", "/api/orders"),
   placeOrder: () => request<OrderView>("POST", "/api/orders"),
+  requestCertificate: (amountCents: number) => request<{ called: true }>("POST", "/api/certificates", { amountCents }),
 };

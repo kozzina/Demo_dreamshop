@@ -45,7 +45,7 @@ export const ASSISTANT_PROMPTS: readonly { label: string; href: string }[] = [
   { label: "Перед экзаменом", href: "/app?mood=big-day" },
   { label: "Нужно вдохновение", href: "/app?mood=inspiration" },
   { label: "Сон для ребёнка", href: "/app?mood=kids" },
-  { label: "Подарок", href: "/app/sets" },
+  { label: "Подарок", href: "/app/sets#gift" },
 ];
 
 /** What the buyer sees under each status: the shop's own words (knowledge base, section 4). */

@@ -4,6 +4,7 @@ import { dreamBlurbs } from "@/server/knowledge";
 import { TopBar } from "@/ui/components/TopBar";
 import { SETS } from "@/ui/content";
 import { typo } from "@/ui/format";
+import { GiftCertificate } from "./GiftCertificate";
 import { SetCard } from "./SetCard";
 import styles from "./sets.module.css";
 
@@ -12,7 +13,7 @@ export default function SetsPage() {
   const blurbs = dreamBlurbs();
   return (
     <>
-      <TopBar title="Наборы" back={{ href: "/app", label: "В каталог" }} />
+      <TopBar title="Наборы и подарки" back={{ href: "/app", label: "В каталог" }} />
       <p className={styles.lead}>{typo("Два сна на две ночи подряд. Цена — сумма снов, без наценки. Удобно в подарок.")}</p>
       <ul className={styles.list}>
         {SETS.map((set) => (
@@ -25,6 +26,7 @@ export default function SetsPage() {
           </li>
         ))}
       </ul>
+      <GiftCertificate />
     </>
   );
 }
