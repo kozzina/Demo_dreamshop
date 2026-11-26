@@ -44,6 +44,21 @@ export interface OrderView {
   createdAt: string;
 }
 
+/** One visible line of the chat with the assistant. */
+export interface ChatLine {
+  role: "buyer" | "assistant";
+  text: string;
+}
+
+export interface ChatReply {
+  /** One or two messages, as a person would send them. */
+  messages: string[];
+  /** Tool calls behind the answer, for the «под капотом» view on the site. */
+  trace: string[];
+  /** The cart or orders changed. */
+  changed: boolean;
+}
+
 export interface ApiError {
   error: string;
   details?: Record<string, unknown>;
