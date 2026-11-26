@@ -26,6 +26,8 @@ Telegram: shop bot + mini app          Portfolio site: manager phone
 - **The model never decides money or stock.** The assistant can only call tools; the server validates each call (the dream exists, stock and per-order limits, night rules, the order belongs to the buyer).
 - **The model was chosen by tests, not by taste.** Five models were compared on 65 scripted dialogs — purchases, cart changes, cancellations, status checks, off-topic questions and prompt-injection attempts. Claude Haiku 5.5 is the main model, GLM-5.3-Flash the fallback.
 - **Costs are capped.** 20 assistant messages per buyer per day and a daily budget for all buyers; without the assistant the shop keeps working.
+- **Telegram data is verified, not trusted.** The mini app sends its signed launch data; the server checks the HMAC with the bot token and takes only the user id. The bot chat and the mini app share one sandbox, so what happens in one shows up in the other.
+- **Notifications never slow the shop down.** Order updates go to the buyer's chat after the response is sent; a Telegram failure is logged, not shown.
 - **No personal data.** Telegram names are not stored, checkout uses fictional data, sessions expire.
 
 ## Project structure
@@ -51,3 +53,12 @@ npm run typecheck
 npm run lint
 ```
 
+## Deploy
+
+1. Deploy to any Node host (the demo runs on Vercel, region `fra1`, next to the Neon database) with the variables from `.env.example`.
+2. Apply migrations: `npm run db:migrate`.
+3. Point the bot at the deployment — webhook, menu button, profile texts:
+
+```bash
+APP_URL=https://your-deployment.example npm run telegram:setup
+```

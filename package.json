@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs"
+    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "telegram:setup": "node --env-file=.env.local scripts/telegram-setup.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.1",
