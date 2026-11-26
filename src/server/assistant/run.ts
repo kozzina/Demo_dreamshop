@@ -35,7 +35,7 @@ export interface AssistantReply {
 }
 
 let client: Anthropic | undefined;
-const anthropic = () => (client ??= new Anthropic({ apiKey: config.assistant.apiKey(), maxRetries: 2, timeout: 30_000 }));
+const anthropic = () => (client ??= new Anthropic({ apiKey: config.assistant.apiKey(), baseURL: config.assistant.baseUrl, maxRetries: 2, timeout: 30_000 }));
 
 /** Today's message count for this buyer and today's spend for everyone. */
 async function usageToday(sessionId: string) {

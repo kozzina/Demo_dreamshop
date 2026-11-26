@@ -27,8 +27,13 @@ export const config = {
   },
   assistant: {
     apiKey: () => required("ANTHROPIC_API_KEY"),
+    /**
+     * Optional gateway that speaks the Anthropic Messages API (e.g. https://openrouter.ai/api);
+     * empty means the Anthropic API directly. The model name then follows the gateway's naming.
+     */
+    baseUrl: process.env.ASSISTANT_BASE_URL || undefined,
     /** Chosen by the test runs in eval/: every dialog passed, no invented prices. */
-    model: process.env.ASSISTANT_MODEL ?? "claude-haiku-5-5",
+    model: process.env.ASSISTANT_MODEL || "claude-haiku-5-5",
     /** Messages one buyer can send to the assistant per day — enough to try it, cheap to run. */
     messagesPerDay: number("ASSISTANT_MESSAGES_PER_DAY", 20),
     /** Hard daily cap for all buyers together; the shop keeps working without the assistant. */
