@@ -20,7 +20,14 @@ const HISTORY_ROWS = 30;
 /** Claude Haiku 5.5 prices, USD per million tokens (prompts up to 100K tokens). Cache writes 1.25×, reads 0.1×. */
 const PRICE = { input: 0.1, output: 0.5, cacheWrite: 0.125, cacheRead: 0.01 };
 
-export const LIMIT_REPLY = "На сегодня я своё отговорила. Магазин работает — всё можно оформить в мини-приложении, а завтра я снова на связи.";
+/**
+ * Limit replies say plainly that this is a demo rule, not Sonya's choice:
+ * the per-buyer message cap and the shared daily AI budget read differently.
+ */
+export const limitReply = (messagesPerDay: number) =>
+  `Это демо, и в нём у меня лимит — ${messagesPerDay} сообщений в день на одного покупателя, чтобы AI не расходовался зря. На сегодня он закончился, завтра я снова на связи. А магазин работает и без меня: каталог, корзина и заказы — в мини-приложении.`;
+export const BUDGET_REPLY =
+  "Это демо, и у него дневной бюджет на AI для всех посетителей — на сегодня он закончился. Завтра я снова на связи, а магазин работает и без меня: всё можно оформить в мини-приложении.";
 export const FALLBACK_REPLY = "Что-то я задумалась и потеряла мысль. Напишите ещё раз через минуту — а магазин работает, всё есть в мини-приложении.";
 
 export interface AssistantReply {
@@ -83,8 +90,11 @@ const textOf = (content: Anthropic.ContentBlock[]) =>
  */
 export async function askAssistant(session: Session, text: string): Promise<AssistantReply> {
   const usage = await usageToday(session.id);
-  if (usage.messages >= config.assistant.messagesPerDay || usage.costUsd >= config.assistant.dailyBudgetUsd) {
-    return { messages: [LIMIT_REPLY], trace: [], changed: false, fallback: "limit" };
+  if (usage.messages >= config.assistant.messagesPerDay) {
+    return { messages: [limitReply(config.assistant.messagesPerDay)], trace: [], changed: false, fallback: "limit" };
+  }
+  if (usage.costUsd >= config.assistant.dailyBudgetUsd) {
+    return { messages: [BUDGET_REPLY], trace: [], changed: false, fallback: "limit" };
   }
 
   const turn: Anthropic.MessageParam[] = [{ role: "user", content: text.slice(0, 2000) }];
