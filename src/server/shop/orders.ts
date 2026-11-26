@@ -1,26 +1,19 @@
 import "server-only";
 import { and, desc, eq, inArray, lt, sql } from "drizzle-orm";
 import { cartTotal, describeCart } from "@/domain/cart";
-import { findDream } from "@/domain/catalog";
+import { findDream, type DreamSlug } from "@/domain/catalog";
 import { cents, formatUsd } from "@/domain/money";
 import { advance, nextStatus, type OrderStatus } from "@/domain/order";
 import { fail, ok } from "@/domain/result";
 import { db } from "../db/client";
 import { cartLines, events, orderItems, orders } from "../db/schema";
 import { loadCart, sessionStock } from "./cart";
+import type { CartItem, OrderView } from "@/shared/contract";
 import type { Session } from "./sessions";
 
 /** If nobody presses a button in the manager feed, an order moves on by itself after this delay. */
 export const AUTO_ADVANCE_SECONDS = 20;
 const LOW_STOCK = 2;
-
-export interface OrderView {
-  number: number;
-  status: OrderStatus;
-  total: string;
-  items: { slug: string; name: string; qty: number; night: string; price: string }[];
-  createdAt: string;
-}
 
 /**
  * Places the order in one transaction: re-checks stock, writes the order and its items,
@@ -68,7 +61,7 @@ async function viewsOf(rows: (typeof orders.$inferSelect)[]): Promise<OrderView[
     createdAt: row.createdAt.toISOString(),
     items: items
       .filter((item) => item.orderNumber === row.number)
-      .map((item) => ({ slug: item.slug, name: findDream(item.slug)?.name.ru ?? item.slug, qty: item.qty, night: item.night, price: formatUsd(cents(item.priceCents)) })),
+      .map((item): CartItem => ({ slug: item.slug as DreamSlug, name: findDream(item.slug)?.name.ru ?? item.slug, qty: item.qty, night: item.night, price: formatUsd(cents(item.priceCents)) })),
   }));
 }
 
