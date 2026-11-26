@@ -21,13 +21,17 @@ export type Activity =
   | { kind: "order"; channel: "web" | "telegram"; lines: Cart }
   | { kind: "request"; topic: ManagerTopic; summary: string };
 
+/**
+ * Only what a person has to do (knowledge base, sections 5–7): questions the knowledge base
+ * answers are Sonya's, so they never show up here as calls for a manager.
+ */
 const REQUESTS: { topic: ManagerTopic; summary: string }[] = [
-  { topic: "question", summary: "Спрашивает, можно ли подарить сон на день рождения" },
-  { topic: "question", summary: "Уточняет, запомнит ли сон утром" },
-  { topic: "question", summary: "Спрашивает, подойдёт ли «Море из детства» ребёнку 5 лет" },
   { topic: "certificate", summary: "Подарочный сертификат на $25" },
   { topic: "certificate", summary: "Подарочный сертификат на $50" },
   { topic: "reschedule", summary: "Хочет перенести ночь заказа на выходные" },
+  { topic: "cancel", summary: "Хочет отменить заказ: планы на эту ночь поменялись" },
+  { topic: "complaint", summary: "Сон прервался посреди ночи, просит перенести его на другую ночь" },
+  { topic: "other", summary: "Хочет заказать 20 снов для команды — больше лимита в одном заказе" },
 ];
 
 /** Dreams the shop sells right now (the sold-out seasonal one never shows up in orders). */
