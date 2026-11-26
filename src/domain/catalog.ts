@@ -46,3 +46,6 @@ const BY_SLUG = new Map<string, Dream>(CATALOG.map((dream) => [dream.slug, dream
 export const findDream = (slug: string): Dream | undefined => BY_SLUG.get(slug);
 
 export const isDreamSlug = (slug: string): slug is DreamSlug => BY_SLUG.has(slug);
+
+/** Square cover illustration, 1024 px WebP in public/covers, served from the CDN with the app. */
+export const coverPath = (slug: DreamSlug): string => `/covers/${slug}.webp`;
