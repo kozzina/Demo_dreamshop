@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState, type CSSProperties } from "react";
 import { coverPath } from "@/domain/catalog";
@@ -9,7 +10,10 @@ import type { OrderView } from "@/shared/contract";
 import { api } from "@/ui/api";
 import { EmptyState } from "@/ui/components/EmptyState";
 import { Icon } from "@/ui/components/Icon";
+import { TopBar } from "@/ui/components/TopBar";
+import { STATUS_NOTE } from "@/ui/content";
 import { nightLabel, STATUS_LABEL } from "@/ui/format";
+import { useVera } from "@/ui/vera";
 import styles from "./orders.module.css";
 
 /** Statuses change in the manager feed on the site; the list polls so the buyer sees it live. */
@@ -26,6 +30,7 @@ export default function OrdersPage() {
 function Orders() {
   const placed = Number(useSearchParams().get("placed"));
   const [orders, setOrders] = useState<OrderView[] | null>(null);
+  const { openVera } = useVera();
 
   useEffect(() => {
     let alive = true;
@@ -41,27 +46,47 @@ function Orders() {
     };
   }, []);
 
-  if (orders === null) return <p className={styles.hint} role="status">Загружаем заказы…</p>;
+  const bar = <TopBar title="Мои заказы" />;
+  if (orders === null) {
+    return (
+      <>
+        {bar}
+        <p className={styles.hint} role="status">
+          Загружаем заказы…
+        </p>
+      </>
+    );
+  }
   if (orders.length === 0) {
-    return <EmptyState icon="receipt" title="Заказов пока нет" text="Оформленные сны и их статусы появятся здесь." action={{ href: "/app", label: "В каталог" }} />;
+    return (
+      <>
+        {bar}
+        <EmptyState icon="receipt" title="Заказов пока нет" text="Оформленные сны и их статусы появятся здесь." action={{ href: "/app", label: "В каталог" }} />
+      </>
+    );
   }
 
   return (
     <>
-      <h1 className={styles.title}>Мои заказы</h1>
+      {bar}
       {placed > 0 && (
-        <p className={styles.placed} role="status">
-          <Icon name="check" size={20} />
-          <span>
-            Заказ №{placed} оформлен. Статус обновляется сам{" "}— можно следить здесь или в{" "}чате бота.
+        <section className={styles.success} role="status">
+          <span className={styles.successIcon}>
+            <Icon name="check" size={30} />
           </span>
-        </p>
+          <h2>Заказ №{placed} оформлен</h2>
+          <p>Статус меняется сам — следите здесь или в{"\u00a0"}чате с{"\u00a0"}ботом.</p>
+        </section>
       )}
       <ul className={styles.list}>
         {orders.map((order) => (
           <OrderCard key={order.number} order={order} highlight={order.number === placed} />
         ))}
       </ul>
+      <button type="button" className={styles.ask} onClick={openVera}>
+        <Icon name="sparkle" size={18} />
+        Вопрос по заказу? Спросите Веру
+      </button>
     </>
   );
 }
@@ -91,12 +116,10 @@ function OrderCard({ order, highlight }: { order: OrderView; highlight: boolean 
           ))}
         </ol>
       )}
-      {!cancelled && (
-        <p className={styles.stepNote}>
-          Шаг {step + 1} из {ORDER_STATUSES.length}
-          {next ? ` · дальше: ${STATUS_LABEL[next].toLowerCase()}` : " · готово"}
-        </p>
-      )}
+      <p className={styles.note}>
+        {STATUS_NOTE[order.status]}
+        {!cancelled && next && <span> Дальше: {STATUS_LABEL[next].toLowerCase()}.</span>}
+      </p>
 
       <ul className={styles.items}>
         {order.items.map((item) => (
@@ -118,6 +141,11 @@ function OrderCard({ order, highlight }: { order: OrderView; highlight: boolean 
         <span>Итого</span>
         <b>{order.total}</b>
       </div>
+      {order.status === "delivered" && (
+        <Link href="/app" className={styles.again}>
+          Заказать ещё
+        </Link>
+      )}
     </li>
   );
 }

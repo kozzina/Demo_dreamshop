@@ -9,7 +9,7 @@ export function EmptyState({ icon, title, text, action }: { icon: IconName; titl
       <span className={styles.icon}>
         <Icon name={icon} size={28} />
       </span>
-      <h1>{title}</h1>
+      <h2>{title}</h2>
       <p>{text}</p>
       <Link href={action.href} className={styles.action}>{action.label}</Link>
     </div>

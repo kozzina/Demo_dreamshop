@@ -1,0 +1,112 @@
+/* Sticks to the bottom of the dream page, just above the tab bar. */
+.bar {
+  position: sticky;
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 10px 10px 10px 20px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 14px 34px -14px rgb(110 80 200 / 0.4);
+}
+
+.price {
+  display: grid;
+}
+
+.price span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.price b {
+  font-size: 21px;
+  font-variant-numeric: tabular-nums;
+}
+
+.primary,
+.add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 22px -10px rgb(109 75 216 / 0.7);
+  transition: var(--press), opacity 160ms;
+}
+
+.primary:active:not(:disabled),
+.add:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.primary:disabled,
+.add:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.status {
+  margin: 0;
+  min-height: 0;
+  color: var(--success);
+  font-size: 14px;
+  text-align: center;
+}
+
+.status:not(:empty) {
+  margin-top: 8px;
+}
+
+.sheetBody {
+  display: grid;
+  gap: 14px;
+}
+
+.rules,
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.note {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add {
+  flex: 1;
+}
+
+.error {
+  margin: 0;
+  color: var(--danger);
+  font-size: 14px;
+}

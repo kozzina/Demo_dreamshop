@@ -1,44 +1,50 @@
-/* Floating tab bar: stays clear of the home indicator and leaves the page edges free. */
+/* Floating glass tab bar; Vera rises above it in the middle. */
 .nav {
   position: fixed;
   inset: auto 0 0;
   z-index: 20;
-  padding: 0 16px calc(12px + env(safe-area-inset-bottom));
+  padding: 0 12px calc(10px + env(safe-area-inset-bottom));
   pointer-events: none;
 }
 
 .bar {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 420px;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  max-width: 480px;
   margin: 0 auto;
   padding: 6px;
   border: 1px solid var(--glass-edge);
-  border-radius: 999px;
+  border-radius: 28px;
   background: rgb(255 255 255 / 0.86);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: 0 12px 32px rgb(110 80 200 / 0.16);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 14px 34px -12px rgb(110 80 200 / 0.3);
   pointer-events: auto;
 }
 
-.tab {
+.tab,
+.vera {
   display: grid;
   justify-items: center;
-  gap: 2px;
-  min-height: 52px;
-  padding: 6px 4px 4px;
-  border-radius: 999px;
+  gap: 3px;
+  min-height: 54px;
+  padding: 7px 2px 5px;
+  border: 0;
+  border-radius: 20px;
+  background: none;
   color: var(--muted);
+  font: inherit;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.01em;
   text-decoration: none;
+  cursor: pointer;
   transition: color 160ms, background-color 160ms, var(--press);
 }
 
-.tab:active {
-  transform: scale(0.96);
+.tab:active,
+.vera:active {
+  transform: scale(0.95);
 }
 
 .tab[aria-current="page"] {
@@ -53,16 +59,35 @@
 
 .badge {
   position: absolute;
-  top: -5px;
-  right: -11px;
-  min-width: 18px;
-  height: 18px;
+  top: -6px;
+  right: -10px;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 20px;
   padding: 0 5px;
-  border-radius: 9px;
+  border: 2px solid #fff;
+  border-radius: 10px;
   background: var(--accent-fill);
   color: var(--on-accent);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 18px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 16px;
   text-align: center;
+}
+
+.vera {
+  color: var(--accent);
+}
+
+.veraButton {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-top: -30px;
+  border: 4px solid rgb(255 255 255 / 0.9);
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 12px 26px -8px rgb(109 75 216 / 0.7);
 }

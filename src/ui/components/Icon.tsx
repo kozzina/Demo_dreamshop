@@ -9,7 +9,12 @@ const PATHS = {
   minus: "M5 12h14",
   close: "M6 6l12 12M18 6L6 18",
   clock: "M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
-  sparkle: "M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z",
+  sparkle: "M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Zm6.5 10.5.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z",
+  layers: "M12 3l9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5m-18 4 9 5 9-5",
+  arrow: "M5 12h14m-6-6 6 6-6 6",
+  shield: "M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3Zm-3.5 9 2.5 2.5 4.5-5",
+  chat: "M4 5h16v11H8l-4 4V5Zm4 5h8m-8 3h5",
+  calendar: "M4 6h16v14H4V6Zm0 4h16M8 3v4m8-4v4",
 } as const;
 
 export type IconName = keyof typeof PATHS;

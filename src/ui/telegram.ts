@@ -5,6 +5,7 @@
 interface TelegramWebApp {
   ready(): void;
   expand(): void;
+  close(): void;
   initData: string;
   isVersionAtLeast(version: string): boolean;
   setHeaderColor(color: string): void;
@@ -62,6 +63,10 @@ function paintChrome(app: TelegramWebApp): void {
 
 /** Signed launch data; empty outside Telegram. */
 export const telegramInitData = (): string => webApp()?.initData ?? "";
+
+/** Inside Telegram the chat with the bot is one step back: closing the mini app returns there. */
+export const canReturnToChat = (): boolean => telegramInitData() !== "";
+export const returnToChat = (): void => webApp()?.close();
 
 export function haptic(kind: "tap" | "success" | "error"): void {
   const app = webApp();

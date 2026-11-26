@@ -1,11 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { coverPath } from "@/domain/catalog";
 import { api } from "@/ui/api";
 import { EmptyState } from "@/ui/components/EmptyState";
-import { Icon } from "@/ui/components/Icon";
+import { Icon, type IconName } from "@/ui/components/Icon";
+import { TopBar } from "@/ui/components/TopBar";
 import { errorMessage, nightLabel, typo } from "@/ui/format";
 import { useShop } from "@/ui/shop-context";
 import { haptic } from "@/ui/telegram";
@@ -13,10 +15,17 @@ import styles from "./checkout.module.css";
 
 /** The demo never asks for personal or payment details: the order data is fictional and shown as text. */
 const DEMO_DETAILS = [
-  { label: "Покупатель", value: "Вымышленный покупатель" },
-  { label: "Доставка", value: "Во сне, в выбранную ночь — бесплатно" },
+  { label: "Покупатель", value: "Луна" },
+  { label: "Доставка", value: "Во сне · бесплатно" },
   { label: "Оплата", value: "Демо: деньги не списываются" },
 ] as const;
+
+/** What happens after «Оплатить», in the shop's own words (knowledge base, section 4). */
+const NEXT_STEPS: { icon: IconName; text: string }[] = [
+  { icon: "receipt", text: "Менеджер примет заказ" },
+  { icon: "sparkle", text: "Мастерская настроит сюжет под\u00a0вашу\u00a0ночь" },
+  { icon: "moon", text: "Сон придёт, когда вы уснёте" },
+];
 
 export default function CheckoutPage() {
   const { cart, refresh, ready } = useShop();
@@ -40,27 +49,37 @@ export default function CheckoutPage() {
   }
 
   if (ready && cart.items.length === 0 && !busy) {
-    return <EmptyState icon="bag" title="Нечего оформлять" text="Корзина пуста — выберите сон в каталоге." action={{ href: "/app", label: "В каталог" }} />;
+    return (
+      <>
+        <TopBar title="Оформление" back={{ href: "/app/cart", label: "В корзину" }} />
+        <EmptyState icon="bag" title="Нечего оформлять" text="Корзина пуста — выберите сон в каталоге." action={{ href: "/app", label: "В каталог" }} />
+      </>
+    );
   }
 
   return (
     <>
-      <Link href="/app/cart" className={styles.back}>
-        <Icon name="back" size={18} />
-        Корзина
-      </Link>
-      <h1 className={styles.title}>Оформление</h1>
+      <TopBar title="Оформление" back={{ href: "/app/cart", label: "В корзину" }} />
 
       <section className={styles.card} aria-labelledby="checkout-items">
         <h2 id="checkout-items">Ваш заказ</h2>
         <ul className={styles.items}>
           {cart.items.map((item) => (
             <li key={item.slug}>
-              <span className={styles.itemName}>
-                {item.name}
-                {item.qty > 1 && <span className={styles.qty}> × {item.qty}</span>}
+              <span className={styles.thumb}>
+                <Image src={coverPath(item.slug)} alt="" fill sizes="48px" />
               </span>
-              <span className={styles.itemNight}>{nightLabel(item.night)}</span>
+              <span className={styles.itemText}>
+                <b>
+                  {item.name}
+                  {item.qty > 1 && <span className={styles.qty}> × {item.qty}</span>}
+                </b>
+                <span>
+                  <Icon name="moon" size={13} />
+                  {nightLabel(item.night)}
+                </span>
+              </span>
+              <span className={styles.itemPrice}>{item.price}</span>
             </li>
           ))}
         </ul>
@@ -84,11 +103,29 @@ export default function CheckoutPage() {
         </dl>
       </section>
 
-      {error && <p className={styles.error} role="alert">{error}</p>}
+      <section className={styles.next} aria-labelledby="checkout-next">
+        <h2 id="checkout-next">Что будет дальше</h2>
+        <ol>
+          {NEXT_STEPS.map((step) => (
+            <li key={step.text}>
+              <span className={styles.nextIcon}>
+                <Icon name={step.icon} size={18} />
+              </span>
+              {step.text}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {error && (
+        <p className={styles.error} role="alert">
+          {error}
+        </p>
+      )}
       <button type="button" className={styles.pay} disabled={busy || !ready} onClick={pay}>
-        {busy ? "Оформляем…" : `Оплатить ${cart.total}`}
+        {busy ? "Оформляем…" : `Оплатить ${cart.total} (демо)`}
       </button>
-      <p className={styles.note}>{typo("Это демо: свои данные вводить не нужно, оплата не настоящая.")}</p>
+      <p className={styles.note}>{typo("В демо данные вымышленные, деньги не списываются.")}</p>
     </>
   );
 }

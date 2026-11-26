@@ -1,21 +1,22 @@
 .dream {
   position: relative;
   display: grid;
+  margin-top: -12px;
 }
 
-/* The cover runs edge to edge and fades into the night below it. */
+/* The cover runs edge to edge and fades into the page below it. */
 .cover {
   position: relative;
   aspect-ratio: 1;
   margin: 0 -16px;
   overflow: hidden;
-  background: var(--surface);
-  mask-image: linear-gradient(180deg, #000 72%, transparent);
+  background: var(--accent-soft);
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
 }
 
 @media (min-width: 640px) {
   .cover {
-    margin: 0;
+    margin: 12px 0 0;
     border-radius: var(--radius);
   }
 }
@@ -24,121 +25,181 @@
   object-fit: cover;
 }
 
-.back {
+.overlay {
   position: absolute;
   top: 12px;
+  right: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .overlay {
+    top: 24px;
+    right: 12px;
+    left: 12px;
+  }
+}
+
+.round {
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
   background: rgb(255 255 255 / 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: var(--text);
+  box-shadow: 0 6px 18px -10px rgb(110 80 200 / 0.5);
   transition: var(--press);
 }
 
-@media (min-width: 640px) {
-  .back {
-    left: 12px;
-  }
-}
-
-.back:active {
+.round:active {
   transform: scale(0.92);
 }
 
-.genre {
-  margin: -28px 0 0;
+.demo {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.intro {
   position: relative;
+  margin-top: -40px;
+}
+
+.genre {
+  margin: 0 0 4px;
   color: var(--accent);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .name {
-  margin: 2px 0 10px;
+  margin: 0 0 12px;
   font-size: clamp(28px, 8vw, 34px);
-  font-weight: 500;
-  line-height: 1.05;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-.facts {
+.moods {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.facts li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
-  border: 1px solid var(--glass-edge);
+.moods li {
+  padding: 5px 12px;
   border-radius: 999px;
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 500;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.facts .price {
-  color: var(--text);
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.facts > div {
+  padding: 12px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.facts dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.facts dd {
+  margin: 2px 0 0;
+  font-size: 16px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
 
 .teaser {
-  margin: 16px 0 0;
+  position: relative;
+  margin: 18px 0 0;
+  padding: 18px 18px 18px 22px;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(100% 90% at 0% 0%, rgb(255 215 200 / 0.6), transparent 60%),
+    radial-gradient(100% 90% at 100% 100%, rgb(210 195 255 / 0.6), transparent 60%),
+    var(--surface);
   font-size: 17px;
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-
-.section {
-  padding: 18px 0 2px;
-  border-top: 1px solid var(--line);
-  margin-top: 14px;
-}
-
-.section h2 {
-  margin: 0 0 8px;
-  font-size: 19px;
-  font-weight: 600;
-}
-
-.section p {
-  margin: 0;
-  color: var(--muted);
+  font-style: italic;
   line-height: 1.6;
   text-wrap: pretty;
 }
 
-/* Scenes read as a short storyboard: numbered steps on a thin line. */
+.section {
+  margin-top: 26px;
+}
+
+.section h2,
+.fit h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Scenes as a path: dots on a thin vertical line, the last one is the soft wake-up. */
 .scenes {
+  position: relative;
   display: grid;
-  gap: 12px;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
   counter-reset: scene;
 }
 
+.scenes::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 13px;
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #b7a3f3, #ffc6b3);
+}
+
 .scenes li {
   position: relative;
-  padding-left: 40px;
-  color: var(--muted);
-  line-height: 1.55;
+  min-height: 28px;
+  padding: 3px 0 0 44px;
+  line-height: 1.5;
   counter-increment: scene;
+}
+
+.scenes li::first-letter {
+  text-transform: uppercase;
 }
 
 .scenes li::before {
@@ -148,11 +209,95 @@
   left: 0;
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #fff;
   border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 12px;
+  font-weight: 800;
+  box-sizing: border-box;
+}
+
+.feelings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feelings li {
+  padding: 8px 14px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.feelings li::first-letter {
+  text-transform: uppercase;
+}
+
+.fit {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.fitCard {
+  padding: 16px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.fitCard h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--success);
+}
+
+.fitCard[data-kind="not"] h2 {
+  color: var(--danger);
+}
+
+.fitCard p,
+.notes {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.fitCard p::first-letter {
+  text-transform: uppercase;
+}
+
+.promise {
+  display: grid;
+  gap: 10px;
+  margin: 26px 0 0;
+  padding: 16px;
+  border-radius: var(--radius);
   background: var(--accent-soft);
+  list-style: none;
+}
+
+.promise li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.promise svg {
   color: var(--accent);
-  font-size: 13px;
-  font-weight: 700;
 }

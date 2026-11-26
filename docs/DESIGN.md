@@ -18,6 +18,26 @@ It feels like waking up from a good dream, and the covers read as part of the sa
   not a dropdown: the buyer sees the week at a glance, and the rules (two dreams, six hours a
   night) read naturally per night in the cart.
 
+## Screens
+
+The shop's knowledge base (`content/knowledge.md`) is the brief: every screen shows what the
+shop actually promises, not just a product grid.
+
+- **Home** — greeting by the buyer's time of day; a Vera card and two shortcuts (sets, the best
+  seller) in the reference's 1 + 2 layout; occasions from the «what to suggest» table; dream cards
+  with mood, label (best seller, limited, sold out) and price; «about the workshop» with the motto,
+  story and safety principles.
+- **Sets** — the three sets from the knowledge base; «add set» plans consecutive free nights
+  against the cart rules (`src/ui/plan-set.ts`) and the server re-checks every add.
+- **Dream** — edge-to-edge cover, mood tags, facts, the teaser as a quote, scenes as a path,
+  feelings, «good for / not for», notes, guarantees, similar dreams. A sticky price bar opens a
+  sheet with the night strip: nights where the dream would break the rules are marked as taken.
+- **Cart** — each night is a card with a load meter (dreams and hours against the limits).
+- **Checkout** — order with covers, fictional data as text, «what happens next».
+- **Orders** — a success moment after paying, live status in the shop's own words, progress.
+- **Vera** — the round button in the tab bar opens a sheet with quick asks. Until the assistant
+  is connected they open the matching selection; inside Telegram there is «write to Vera».
+
 ## Tokens
 
 All tokens live in `src/app/app/shop.module.css` on `.shop`. Components use only the tokens.

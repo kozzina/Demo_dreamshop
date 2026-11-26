@@ -1,0 +1,41 @@
+.bar {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  margin: 4px 0 16px;
+}
+
+.round {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  box-shadow: 0 6px 18px -10px rgb(110 80 200 / 0.4);
+  transition: var(--press);
+}
+
+.round:active {
+  transform: scale(0.92);
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.demo {
+  justify-self: end;
+  padding: 4px 10px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -76,3 +76,8 @@
   font-size: 12px;
   opacity: 0.75;
 }
+
+.night[data-taken] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

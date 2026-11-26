@@ -1,0 +1,180 @@
+.lead {
+  margin: -4px 0 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 14px 30px -22px rgb(90 60 180 / 0.45);
+  overflow: hidden;
+}
+
+/* Two covers side by side read as «two nights». */
+.covers {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 6px 6px 0;
+  border-radius: calc(var(--radius) - 6px);
+  overflow: hidden;
+}
+
+.cover {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--accent-soft);
+}
+
+.cover img {
+  object-fit: cover;
+}
+
+.nights {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.body {
+  padding: 14px 16px 16px;
+}
+
+.body h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.pitch {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dreams {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.dreams li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 10px;
+}
+
+.step {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.dreams a {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.dreamMeta {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.total {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.add {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 22px -10px rgb(109 75 216 / 0.7);
+  transition: var(--press), opacity 160ms;
+}
+
+.add:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.add:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.ok,
+.error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  font-size: 14px;
+}
+
+.ok:empty,
+.error:empty {
+  position: absolute;
+  margin: 0;
+}
+
+.ok {
+  color: var(--success);
+}
+
+.ok a {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.error {
+  color: var(--danger);
+}

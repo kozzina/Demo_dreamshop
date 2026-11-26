@@ -1,0 +1,298 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 8px 18px -8px rgb(109 75 216 / 0.7);
+}
+
+.demo {
+  padding: 6px 10px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hero {
+  margin-bottom: 18px;
+}
+
+.hello {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(27px, 7.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Reference layout: one tall card on the left, two short cards stacked on the right. */
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.veraCard,
+.smallCard {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--press);
+}
+
+.veraCard:active,
+.smallCard:active {
+  transform: scale(0.98);
+}
+
+.veraCard {
+  grid-row: span 2;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgb(205 185 255 / 0.65), transparent 60%),
+    radial-gradient(100% 70% at 0% 100%, rgb(255 210 195 / 0.6), transparent 60%),
+    var(--surface);
+}
+
+.featureIcon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--accent);
+  box-shadow: 0 6px 16px -10px rgb(110 80 200 / 0.5);
+}
+
+.featureTitle {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.featureText {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.featureAction {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 22px -10px rgb(109 75 216 / 0.7);
+}
+
+.smallCard {
+  grid-template-columns: 1fr auto;
+}
+
+.smallCard .featureIcon {
+  grid-column: 1 / -1;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 6px;
+}
+
+.smallCard .featureTitle,
+.smallCard .featureText {
+  grid-column: 1;
+}
+
+.smallCard > svg {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: end;
+  color: var(--muted);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 10px;
+}
+
+.sectionHead h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sectionHead span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -16px 24px;
+  padding: 2px 16px 6px;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, #000 88%, transparent);
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: none;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--press);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 8px 18px -10px rgb(109 75 216 / 0.8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.grid > li {
+  display: grid;
+}
+
+.skeleton {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%) 0 0 / 300% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+.about {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(90% 70% at 100% 100%, rgb(190 210 255 / 0.55), transparent 60%),
+    var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.aboutEyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.about h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.about p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.about ul {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.about li svg {
+  color: var(--accent);
+}
