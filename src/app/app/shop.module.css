@@ -30,6 +30,23 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/*
+ * The page itself scrolls, so the rules go on <html>: no visible scrollbar (the mini app
+ * is a phone screen) and no rubber-band overscroll that drags the whole app down at the top.
+ */
+:global(html):has(.shop) {
+  overscroll-behavior: none;
+  scrollbar-width: none;
+}
+
+:global(html):has(.shop)::-webkit-scrollbar {
+  display: none;
+}
+
+:global(body):has(.shop) {
+  overscroll-behavior: none;
+}
+
 /* Blurred colour clouds: peach top left, lavender right, sky blue low. Fixed, so they stay put while scrolling. */
 .shop::before {
   content: "";

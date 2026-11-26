@@ -11,6 +11,7 @@ interface TelegramWebApp {
   setHeaderColor(color: string): void;
   setBackgroundColor(color: string): void;
   setBottomBarColor?(color: string): void;
+  disableVerticalSwipes?(): void;
   HapticFeedback?: { impactOccurred(style: "light" | "medium"): void; notificationOccurred(type: "success" | "error"): void };
 }
 
@@ -44,7 +45,11 @@ export function loadTelegram(): Promise<void> {
       const app = webApp();
       app?.ready();
       app?.expand();
-      if (app) paintChrome(app);
+      if (app) {
+        paintChrome(app);
+        // Scrolling up at the top of a page should not pull the mini app down and close it (Mini Apps 7.7).
+        if (app.isVersionAtLeast("7.7")) app.disableVerticalSwipes?.();
+      }
       resolve();
     };
     script.onerror = () => resolve();
