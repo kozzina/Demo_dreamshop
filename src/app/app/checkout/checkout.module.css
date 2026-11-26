@@ -1,0 +1,95 @@
+.title {
+  margin: 8px 0 12px;
+  font-size: 24px;
+  font-weight: 650;
+}
+
+.items {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  list-style: none;
+}
+
+.items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.night {
+  color: var(--hint);
+  font-size: 14px;
+}
+
+.fields {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 14px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.fields legend {
+  padding: 0;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--hint);
+}
+
+.fields label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--hint);
+}
+
+.fields input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+}
+
+.note {
+  margin: 10px 0 16px;
+  font-size: 13px;
+  color: var(--hint);
+}
+
+.note a {
+  color: var(--accent);
+}
+
+.error {
+  color: var(--danger);
+}
+
+.pay {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pay:disabled {
+  opacity: 0.6;
+}

@@ -1,0 +1,102 @@
+.title {
+  margin: 8px 0 12px;
+  font-size: 24px;
+  font-weight: 650;
+}
+
+.hint {
+  color: var(--hint);
+}
+
+.placed {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  font-size: 14px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: box-shadow 0.3s;
+}
+
+.order[data-highlight] {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progress li {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  transition: background 0.4s;
+}
+
+.progress li[data-done] {
+  background: var(--accent);
+}
+
+.items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.items span {
+  color: var(--hint);
+}
+
+.total {
+  justify-self: end;
+  font-weight: 600;
+}
+
+.empty {
+  display: grid;
+  gap: 8px;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.empty h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.empty a {
+  color: var(--accent);
+}
