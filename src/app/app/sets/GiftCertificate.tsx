@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { CERTIFICATE_AMOUNTS, CERTIFICATE_VALID_MONTHS } from "@/domain/certificates";
-import { formatUsd, type Cents } from "@/domain/money";
+import type { Cents } from "@/domain/money";
 import { api } from "@/ui/api";
 import { Icon } from "@/ui/components/Icon";
 import { errorMessage, typo } from "@/ui/format";
 import { useShop } from "@/ui/shop-context";
 import { haptic } from "@/ui/telegram";
 import styles from "./gift.module.css";
+
+/** Face values are whole dollars: «$25», not «$25.00». */
+const faceValue = (amount: Cents) => `$${amount / 100}`;
 
 type State = { kind: "idle" } | { kind: "busy" } | { kind: "sent"; amount: string } | { kind: "error"; text: string };
 
@@ -22,7 +25,7 @@ export function GiftCertificate() {
     setState({ kind: "busy" });
     const result = await api.requestCertificate(amount);
     haptic(result.ok ? "success" : "error");
-    setState(result.ok ? { kind: "sent", amount: formatUsd(amount) } : { kind: "error", text: errorMessage(result.error) });
+    setState(result.ok ? { kind: "sent", amount: faceValue(amount) } : { kind: "error", text: errorMessage(result.error) });
   }
 
   return (
@@ -37,7 +40,7 @@ export function GiftCertificate() {
         {CERTIFICATE_AMOUNTS.map((value) => (
           <label key={value} className={styles.amount}>
             <input type="radio" name="certificate" checked={amount === value} onChange={() => setAmount(value)} />
-            {formatUsd(value)}
+            {faceValue(value)}
           </label>
         ))}
       </fieldset>
