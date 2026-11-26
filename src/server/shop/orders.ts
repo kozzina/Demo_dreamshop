@@ -7,6 +7,7 @@ import { advance, nextStatus, type OrderStatus } from "@/domain/order";
 import { fail, ok } from "@/domain/result";
 import { db } from "../db/client";
 import { cartLines, events, orderItems, orders } from "../db/schema";
+import { notifyBuyers } from "../telegram/notify";
 import { loadCart, sessionStock } from "./cart";
 import type { CartItem, OrderView } from "@/shared/contract";
 import type { Session } from "./sessions";
@@ -19,8 +20,8 @@ const LOW_STOCK = 2;
  * Places the order in one transaction: re-checks stock, writes the order and its items,
  * posts feed events and empties the cart. Either all of it happens or nothing.
  */
-export async function placeOrder(session: Session, telegramChatId?: number) {
-  return db().transaction(async (tx) => {
+export async function placeOrder(session: Session) {
+  const result = await db().transaction(async (tx) => {
     const cart = await loadCart(session.id, tx);
     if (cart.length === 0) return fail("cart_empty" as const);
 
@@ -31,7 +32,7 @@ export async function placeOrder(session: Session, telegramChatId?: number) {
     const total = cartTotal(cart);
     const [order] = await tx
       .insert(orders)
-      .values({ sessionId: session.id, channel: session.channel, alias: session.alias, telegramChatId, totalCents: total })
+      .values({ sessionId: session.id, channel: session.channel, alias: session.alias, telegramChatId: session.telegramChatId, totalCents: total })
       .returning();
     await tx.insert(orderItems).values(
       cart.map((line) => ({ orderNumber: order.number, slug: line.slug, qty: line.qty, night: line.night, priceCents: findDream(line.slug)!.price })),
@@ -49,6 +50,8 @@ export async function placeOrder(session: Session, telegramChatId?: number) {
 
     return ok({ number: order.number, status: order.status, total: formatUsd(total), items: view.items, createdAt: order.createdAt.toISOString() } satisfies OrderView);
   });
+  if (result.ok) notifyBuyers([{ ...result.value, telegramChatId: session.telegramChatId }]);
+  return result;
 }
 
 async function viewsOf(rows: (typeof orders.$inferSelect)[]): Promise<OrderView[]> {
@@ -82,15 +85,17 @@ export async function getOrder(sessionId: string, number: number): Promise<Order
  * so the domain rule (forward only, no skipping) is checked under a row lock.
  */
 export async function advanceOrder(number: number, target: OrderStatus, by: "manager" | "auto") {
-  return db().transaction(async (tx) => {
+  const result = await db().transaction(async (tx) => {
     const [row] = await tx.select().from(orders).where(eq(orders.number, number)).for("update");
     if (!row) return fail("not_found" as const);
     const result = advance(row.status, target);
     if (!result.ok) return result;
     await tx.update(orders).set({ status: result.value, statusChangedAt: new Date() }).where(eq(orders.number, number));
     await tx.insert(events).values({ orderNumber: number, type: "status_changed", payload: { from: row.status, to: result.value, by } });
-    return ok({ number, status: result.value, telegramChatId: row.telegramChatId });
+    return ok({ number, status: result.value, total: formatUsd(cents(row.totalCents)), telegramChatId: row.telegramChatId });
   });
+  if (result.ok) notifyBuyers([result.value]);
+  return result;
 }
 
 /**
