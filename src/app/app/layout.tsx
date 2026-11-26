@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { ShopNav } from "@/ui/components/ShopNav";
-import { TelegramScript } from "@/ui/components/TelegramScript";
 import { ShopProvider } from "@/ui/shop-context";
 import styles from "./shop.module.css";
 
@@ -11,7 +10,6 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 export default function ShopLayout({ children }: LayoutProps<"/app">) {
   return (
     <ShopProvider>
-      <TelegramScript />
       <div className={styles.shop}>
         <header className={styles.header}>
           <span className={styles.brand}>Магазин снов</span>

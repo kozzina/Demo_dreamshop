@@ -21,7 +21,8 @@ async function request<T>(method: string, url: string, body?: unknown): Promise<
 }
 
 export const api = {
-  createSession: () => request<{ id: string; alias: string }>("POST", "/api/session", { lang: "ru" }),
+  /** With Telegram launch data the server returns this chat's session instead of a new one. */
+  createSession: (initData?: string) => request<{ id: string; alias: string }>("POST", "/api/session", { lang: "ru", initData }),
   catalog: () => request<CatalogItem[]>("GET", "/api/catalog"),
   cart: () => request<CartView>("GET", "/api/cart"),
   addToCart: (slug: string, qty: number, night: string) => request<CartView>("POST", "/api/cart", { slug, qty, night }),

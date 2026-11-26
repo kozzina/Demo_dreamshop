@@ -19,6 +19,8 @@ function number(name: string, fallback: number): number {
 }
 
 export const config = {
+  /** Public address of this app, e.g. https://dream-shop.example.com — the bot links the mini app to it. */
+  appUrl: () => required("APP_URL").replace(/\/$/, ""),
   telegram: {
     botToken: () => required("TELEGRAM_BOT_TOKEN"),
     webhookSecret: () => required("TELEGRAM_WEBHOOK_SECRET"),

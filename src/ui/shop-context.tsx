@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { ApiError, CartView, CatalogItem } from "@/shared/contract";
 import { api, forgetSession, storedSession, storeSession, type ApiResult } from "./api";
-import { initTelegram } from "./telegram";
+import { loadTelegram, telegramInitData } from "./telegram";
 
 interface Shop {
   ready: boolean;
@@ -18,8 +18,18 @@ interface Shop {
 const EMPTY_CART: CartView = { items: [], total: "$0.00" };
 const ShopContext = createContext<Shop | null>(null);
 
-/** One buyer session for the whole mini app: created on first visit, kept in localStorage for a day. */
+/**
+ * One buyer session for the whole mini app. Inside Telegram the server hands out the session of
+ * this chat on every launch (shared with the bot chat); on the site it lives in localStorage for a day.
+ */
 async function ensureSession(): Promise<void> {
+  await loadTelegram();
+  const initData = telegramInitData();
+  if (initData) {
+    const session = await api.createSession(initData);
+    if (session.ok) storeSession(session.data.id);
+    return;
+  }
   if (storedSession()) {
     const check = await api.cart();
     if (check.ok) return;
@@ -41,7 +51,6 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    initTelegram();
     ensureSession()
       .then(refresh)
       .finally(() => setReady(true));

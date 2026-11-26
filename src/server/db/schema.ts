@@ -7,15 +7,21 @@ import { bigserial, bigint, date, index, integer, jsonb, numeric, pgTable, prima
  */
 
 /** A buyer's sandbox. Carts and chats expire with it after 24 hours; orders stay for the feed. */
-export const sessions = pgTable("sessions", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  channel: text("channel", { enum: ["web", "telegram"] }).notNull(),
-  /** Fictional buyer name shown in the feed, e.g. «Покупатель Луна». Real Telegram names are never stored. */
-  alias: text("alias").notNull(),
-  lang: text("lang", { enum: ["ru", "en"] }).notNull().default("ru"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-});
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    channel: text("channel", { enum: ["web", "telegram"] }).notNull(),
+    /** Fictional buyer name shown in the feed, e.g. «Покупатель Луна». Real Telegram names are never stored. */
+    alias: text("alias").notNull(),
+    lang: text("lang", { enum: ["ru", "en"] }).notNull().default("ru"),
+    /** Telegram only: the private chat with the bot, so the chat and the mini app share one sandbox. */
+    telegramChatId: bigint("telegram_chat_id", { mode: "number" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [index("sessions_telegram_chat_idx").on(t.telegramChatId, t.expiresAt)],
+);
 
 export const cartLines = pgTable(
   "cart_lines",
