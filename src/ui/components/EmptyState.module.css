@@ -13,15 +13,13 @@
   height: 64px;
   margin-bottom: 8px;
   border-radius: 999px;
-  background: var(--dawn-soft);
-  color: var(--dawn);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .empty h1 {
   margin: 0;
-  font-family: var(--serif);
-  font-size: 32px;
-  font-style: italic;
+  font-size: 26px;
   font-weight: 500;
 }
 
@@ -37,8 +35,9 @@
   min-height: 48px;
   padding: 0 28px;
   border-radius: 999px;
-  background: var(--dawn);
-  color: var(--on-dawn);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 10px 24px -10px rgb(124 92 224 / 0.6);
   font-weight: 700;
   text-decoration: none;
   transition: var(--press);

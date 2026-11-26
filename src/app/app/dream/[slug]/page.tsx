@@ -42,7 +42,7 @@ async function DreamDetails({ params }: Pick<PageProps<"/app/dream/[slug]">, "pa
         <Image src={coverPath(dream.slug)} alt="" fill sizes="(max-width: 640px) 100vw, 640px" preload loading="eager" />
       </div>
       <p className={styles.genre}>{dream.genre}</p>
-      <h1 className={styles.name}>{dream.name.ru}</h1>
+      <h1 className={styles.name}>{typo(dream.name.ru)}</h1>
       <ul className={styles.facts} aria-label="Коротко">
         <li>
           <Icon name="clock" size={16} />

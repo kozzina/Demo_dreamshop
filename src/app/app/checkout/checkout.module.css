@@ -12,9 +12,7 @@
 
 .title {
   margin: 0 0 16px;
-  font-family: var(--serif);
-  font-size: 40px;
-  font-style: italic;
+  font-size: 30px;
   font-weight: 500;
   line-height: 1.05;
 }
@@ -22,9 +20,11 @@
 .card {
   margin-bottom: 12px;
   padding: 16px 18px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .card h2 {
@@ -54,15 +54,12 @@
 }
 
 .itemName {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-style: italic;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.15;
 }
 
 .qty {
-  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 15px;
   font-style: normal;
   color: var(--muted);
@@ -90,8 +87,8 @@
 .demoTag {
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--dawn-soft);
-  color: var(--dawn);
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 11px;
   letter-spacing: 0.02em;
   text-transform: none;
@@ -124,13 +121,13 @@
   margin-top: 8px;
   border: 0;
   border-radius: 999px;
-  background: var(--dawn);
-  color: var(--on-dawn);
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font: inherit;
   font-size: 17px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 30px -10px rgb(255 200 162 / 0.6);
+  box-shadow: 0 10px 30px -10px rgb(124 92 224 / 0.45);
   transition: var(--press), opacity 160ms;
 }
 

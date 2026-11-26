@@ -28,7 +28,7 @@ Telegram: shop bot + mini app          Portfolio site: manager phone
 - **Costs are capped.** 20 assistant messages per buyer per day and a daily budget for all buyers; without the assistant the shop keeps working.
 - **Telegram data is verified, not trusted.** The mini app sends its signed launch data; the server checks the HMAC with the bot token and takes only the user id. The bot chat and the mini app share one sandbox, so what happens in one shows up in the other.
 - **Notifications never slow the shop down.** Order updates go to the buyer's chat after the response is sent; a Telegram failure is logged, not shown.
-- **One designed look, not a theme lottery.** The mini app is «a night shop window»: its own night palette, serif titles, a strip of nights instead of a dropdown. Concept, tokens and accessibility notes: [docs/DESIGN.md](docs/DESIGN.md).
+- **One designed look, not a theme lottery.** The mini app is «a dreamy morning»: its own pastel palette with frosted-glass cards, a strip of nights instead of a dropdown. Concept, tokens and accessibility notes: [docs/DESIGN.md](docs/DESIGN.md).
 - **No personal data.** Telegram names are not stored, checkout uses fictional data, sessions expire.
 
 ## Project structure

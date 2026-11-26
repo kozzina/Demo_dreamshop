@@ -2,7 +2,7 @@
   display: inline-grid;
   grid-template-columns: 44px 28px 44px;
   align-items: center;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
   background: var(--surface-2);
 }

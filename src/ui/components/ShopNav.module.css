@@ -13,12 +13,12 @@
   max-width: 420px;
   margin: 0 auto;
   padding: 6px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
-  background: rgb(21 19 43 / 0.94);
+  background: rgb(255 255 255 / 0.86);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  box-shadow: 0 12px 32px rgb(110 80 200 / 0.16);
   pointer-events: auto;
 }
 
@@ -42,8 +42,8 @@
 }
 
 .tab[aria-current="page"] {
-  background: var(--dawn-soft);
-  color: var(--dawn);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .icon {
@@ -59,8 +59,8 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 9px;
-  background: var(--dawn);
-  color: var(--on-dawn);
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 11px;
   font-weight: 700;
   line-height: 18px;

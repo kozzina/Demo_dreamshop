@@ -1,8 +1,6 @@
 .title {
   margin: 12px 0 16px;
-  font-family: var(--serif);
-  font-size: 40px;
-  font-style: italic;
+  font-size: 30px;
   font-weight: 500;
   line-height: 1.05;
 }
@@ -17,7 +15,7 @@
   margin: 0 0 14px;
   padding: 12px 14px;
   border-radius: var(--radius-s);
-  background: rgb(159 227 193 / 0.12);
+  background: rgb(31 138 91 / 0.1);
   color: var(--text);
   font-size: 14px;
   line-height: 1.45;
@@ -38,14 +36,16 @@
 
 .order {
   padding: 16px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .order[data-highlight] {
-  border-color: rgb(255 200 162 / 0.45);
-  box-shadow: 0 0 0 4px var(--dawn-soft);
+  border-color: rgb(124 92 224 / 0.35);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .head {
@@ -58,19 +58,19 @@
 .status {
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--dawn-soft);
-  color: var(--dawn);
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 13px;
   font-weight: 700;
 }
 
 .status[data-status="delivered"] {
-  background: rgb(159 227 193 / 0.12);
+  background: rgb(31 138 91 / 0.1);
   color: var(--success);
 }
 
 .status[data-status="cancelled"] {
-  background: rgb(255 159 176 / 0.12);
+  background: rgb(194 56 79 / 0.1);
   color: var(--danger);
 }
 
@@ -97,7 +97,7 @@
 }
 
 .steps::after {
-  background: var(--dawn);
+  background: var(--accent-fill);
   transform: scaleX(var(--progress, 0));
   transform-origin: left;
   transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -122,12 +122,12 @@
 }
 
 .steps li[data-done] .dot {
-  border-color: var(--dawn);
-  background: var(--dawn);
+  border-color: var(--accent);
+  background: var(--accent-fill);
 }
 
 .steps li[aria-current="step"] .dot {
-  box-shadow: 0 0 0 4px var(--dawn-soft);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .stepNote {
@@ -169,9 +169,7 @@
 }
 
 .itemName {
-  font-family: var(--serif);
-  font-size: 18px;
-  font-style: italic;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.15;
 }

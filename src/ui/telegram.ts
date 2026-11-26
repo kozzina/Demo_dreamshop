@@ -23,8 +23,8 @@ const SDK_URL = "https://telegram.org/js/telegram-web-app.js";
 /** Telegram passes launch data in the URL hash; the SDK keeps a copy here for reloads. */
 const LAUNCH_HASH = "tgWebAppData=";
 const LAUNCH_STORAGE_KEY = "__telegram__initParams";
-/** The shop's night colour (--bg in shop.module.css): Telegram paints its header and edges in it. */
-const SHOP_BACKGROUND = "#0b0a1a";
+/** The shop's background colour (--bg in shop.module.css): Telegram paints its header and edges in it. */
+const SHOP_BACKGROUND = "#f4f0fa";
 
 const webApp = (): TelegramWebApp | undefined => (typeof window === "undefined" ? undefined : window.Telegram?.WebApp);
 

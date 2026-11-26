@@ -1,8 +1,6 @@
 .title {
   margin: 12px 0 12px;
-  font-family: var(--serif);
-  font-size: 40px;
-  font-style: italic;
+  font-size: 30px;
   font-weight: 500;
   line-height: 1.05;
 }
@@ -13,7 +11,7 @@
   margin: 0 0 8px;
   padding: 12px 14px;
   border-radius: var(--radius-s);
-  background: var(--dawn-soft);
+  background: var(--accent-soft);
   color: var(--text);
   font-size: 14px;
   line-height: 1.45;
@@ -22,7 +20,7 @@
 .rules svg {
   flex: none;
   margin-top: 1px;
-  color: var(--dawn);
+  color: var(--accent);
 }
 
 .night h2 {
@@ -48,9 +46,11 @@
   gap: 12px 14px;
   align-items: center;
   padding: 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .thumb {
@@ -76,11 +76,9 @@
 }
 
 .name {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-style: italic;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.25;
   color: var(--text);
   text-decoration: none;
 }
@@ -96,7 +94,7 @@
   min-height: 36px;
   margin-top: 2px;
   padding: 0 30px 0 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
   background: var(--surface-2)
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23a9a3c9' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E")
@@ -145,12 +143,12 @@
   gap: 16px;
   margin-top: 16px;
   padding: 12px 12px 12px 20px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
-  background: rgb(30 27 58 / 0.9);
+  background: rgb(255 255 255 / 0.78);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 0.4);
+  box-shadow: 0 12px 32px rgb(110 80 200 / 0.16);
 }
 
 .summary > div {
@@ -173,8 +171,9 @@
   min-height: 48px;
   padding: 0 28px;
   border-radius: 999px;
-  background: var(--dawn);
-  color: var(--on-dawn);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 10px 24px -10px rgb(124 92 224 / 0.6);
   font-weight: 700;
   text-decoration: none;
   transition: var(--press);
