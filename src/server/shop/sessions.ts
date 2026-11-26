@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, gt } from "drizzle-orm";
+import { and, desc, eq, gt, sql } from "drizzle-orm";
 import { db } from "../db/client";
 import { sessions } from "../db/schema";
 
@@ -9,8 +9,11 @@ export type Lang = "ru" | "en";
 /** Sessions live a day: long enough to try the demo, short enough to keep nothing for long. */
 export const SESSION_TTL_HOURS = 24;
 
-/** Fictional buyer names for the shared feed. Real Telegram names are never stored. */
-const ALIASES = ["Луна", "Облако", "Звезда", "Ветер", "Сова", "Комета", "Туман", "Рассвет", "Светлячок", "Прибой"];
+/**
+ * Buyers in the shared feed are numbered, «Покупатель 12», from a database sequence
+ * (drizzle/0002_numbered_buyers.sql). Real Telegram names are never stored.
+ */
+const nextAlias = () => sql<string>`'Покупатель ' || nextval('buyer_number_seq')`;
 
 export interface Session {
   id: string;
@@ -31,9 +34,8 @@ const toSession = (row: SessionRow): Session => ({
 });
 
 export async function createSession(channel: Channel, lang: Lang, telegramChatId: number | null = null): Promise<Session> {
-  const alias = `Покупатель ${ALIASES[Math.floor(Math.random() * ALIASES.length)]}`;
   const expiresAt = new Date(Date.now() + SESSION_TTL_HOURS * 3600_000);
-  const [row] = await db().insert(sessions).values({ channel, lang, alias, telegramChatId, expiresAt }).returning();
+  const [row] = await db().insert(sessions).values({ channel, lang, alias: nextAlias(), telegramChatId, expiresAt }).returning();
   return toSession(row);
 }
 
