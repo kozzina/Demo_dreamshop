@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
+import { Fragment, useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import type { ChatLine } from "@/shared/contract";
 import { api } from "../api";
 import { ASSISTANT_PROMPTS } from "../content";
 import { useShop } from "../shop-context";
+import { hoodOn, subscribeHood } from "../hood";
 import { canReturnToChat, returnToChat } from "../telegram";
 import { Icon } from "./Icon";
 import { Sheet } from "./Sheet";
@@ -61,9 +62,13 @@ function TelegramHint({ onClose }: { onClose: () => void }) {
   );
 }
 
+/** A chat line; Sonya's answers in this visit also keep the tool calls behind them. */
+type Line = ChatLine & { trace?: string[] };
+
 function Chat({ open }: { open: boolean }) {
   const { refresh, ready } = useShop();
-  const [lines, setLines] = useState<ChatLine[] | null>(null);
+  const hood = useSyncExternalStore(subscribeHood, hoodOn, () => false);
+  const [lines, setLines] = useState<Line[] | null>(null);
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(false);
   const end = useRef<HTMLDivElement>(null);
@@ -86,7 +91,8 @@ function Chat({ open }: { open: boolean }) {
     const result = await api.sendChat(clean);
     setThinking(false);
     const answers = result.ok ? result.data.messages : ["Не получилось отправить. Проверьте связь и попробуйте ещё раз."];
-    setLines((prev) => [...(prev ?? []), ...answers.map((answer) => ({ role: "assistant" as const, text: answer }))]);
+    const trace = result.ok ? result.data.trace : [];
+    setLines((prev) => [...(prev ?? []), ...answers.map((answer, i) => ({ role: "assistant" as const, text: answer, trace: i === 0 ? trace : undefined }))]);
     if (result.ok && result.data.changed) await refresh();
   }
 
@@ -100,9 +106,16 @@ function Chat({ open }: { open: boolean }) {
       <div className={styles.log} aria-live="polite">
         <Intro />
         {lines?.map((line, i) => (
-          <p key={i} className={line.role === "buyer" ? styles.buyer : styles.sonya}>
-            {line.text}
-          </p>
+          <Fragment key={i}>
+            {hood && line.trace && line.trace.length > 0 && (
+              <ul className={styles.trace} aria-label="Как Соня получила ответ">
+                {line.trace.map((step) => (
+                  <li key={step}>→ {step}</li>
+                ))}
+              </ul>
+            )}
+            <p className={line.role === "buyer" ? styles.buyer : styles.sonya}>{line.text}</p>
+          </Fragment>
         ))}
         {thinking && (
           <p className={`${styles.sonya} ${styles.typing}`} aria-label="Соня печатает">

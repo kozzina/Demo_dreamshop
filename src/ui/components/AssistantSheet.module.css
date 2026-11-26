@@ -238,3 +238,20 @@
     animation: none;
   }
 }
+
+/* «Под капотом»: the tool calls behind an answer, in a quiet monospace. */
+.trace {
+  display: grid;
+  gap: 2px;
+  justify-self: start;
+  max-width: 92%;
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: rgb(124 92 224 / 0.07);
+  color: var(--muted);
+  font: 12px/1.45 ui-monospace, "JetBrains Mono", Menlo, monospace;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
