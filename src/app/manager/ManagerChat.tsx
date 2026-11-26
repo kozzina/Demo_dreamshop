@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { cleanSummary, MANAGER_TOPICS, TOPIC_LABEL } from "@/domain/manager-request";
 import { nextStatus, type OrderStatus } from "@/domain/order";
 import type { FeedEvent, ManagerStats } from "@/shared/contract";
 import { api } from "@/ui/api";
@@ -204,13 +205,17 @@ function Message({ event, status, busy, onPress }: { event: FeedEvent; status?: 
     );
   }
 
-  // The reason is written by the assistant from the buyer's words: only its owner sees it in the shared feed.
+  // A neutral one-line summary with a fixed topic, cleaned on the server; cleaned again here
+  // for requests stored before topics existed.
+  const topic = MANAGER_TOPICS.find((t) => t === p.topic);
+  const summary = cleanSummary(String(p.reason ?? ""));
   return (
     <div className={styles.message} data-mine={event.mine || undefined}>
       <div className={styles.bubble}>
         {event.mine && <span className={styles.mine}>Ваш запрос</span>}
         <b>{String(p.alias ?? "Покупатель")} просит менеджера</b>
-        <span>{event.mine ? String(p.reason ?? "") : "Соня передала вопрос, который не смогла решить сама."}</span>
+        {topic && <span className={styles.topic}>Тема: {TOPIC_LABEL[topic]}</span>}
+        <span>{summary || "Соня передала вопрос, который не смогла решить сама."}</span>
         <time>{time}</time>
       </div>
     </div>

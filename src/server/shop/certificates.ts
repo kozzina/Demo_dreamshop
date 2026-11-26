@@ -13,7 +13,7 @@ import type { Session } from "./sessions";
  */
 export async function requestCertificate(session: Session, amount: Cents) {
   const price = formatUsd(amount);
-  const result = await callManager(session, `Подарочный сертификат на ${price}`);
+  const result = await callManager(session, "certificate", `Подарочный сертификат на ${price}`);
   const chatId = session.telegramChatId;
   if (chatId) {
     after(() =>

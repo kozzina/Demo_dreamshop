@@ -2,6 +2,7 @@ import "server-only";
 import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { CATALOG, findDream, type Dream } from "@/domain/catalog";
+import { MANAGER_TOPICS } from "@/domain/manager-request";
 import { formatUsd } from "@/domain/money";
 import { addDays, today } from "@/domain/nights";
 import { dreamDetails } from "../knowledge";
@@ -27,14 +28,31 @@ export const TOOLS: Anthropic.Tool[] = [
   { name: "place_order", description: "Оформить заказ из корзины. Только по явной просьбе покупателя.", input_schema: none },
   { name: "get_my_orders", description: "Заказы этого покупателя: номера, статусы, суммы.", input_schema: none },
   { name: "get_order_status", description: "Статус заказа покупателя по номеру. Чужие заказы не находятся.", input_schema: { type: "object", properties: { number: { type: "integer" } }, required: ["number"], additionalProperties: false } },
-  { name: "call_manager", description: "Позвать живого менеджера: претензия, отмена, перенос, подарочный сертификат, вопрос вне базы знаний.", input_schema: { type: "object", properties: { reason: { type: "string" }, order_number: { type: "integer" } }, required: ["reason"], additionalProperties: false } },
+  {
+    name: "call_manager",
+    description:
+      "Позвать живого менеджера: претензия, отмена, перенос ночи, подарочный сертификат, вопрос вне базы знаний. Заявку видит менеджер в общей ленте демо.",
+    input_schema: {
+      type: "object",
+      properties: {
+        topic: { type: "string", enum: [...MANAGER_TOPICS], description: "Тема заявки" },
+        summary: {
+          type: "string",
+          description: "Одно нейтральное предложение для менеджера: что хочет покупатель, с номером заказа или номиналом, если есть. Без имён, контактов, цитат и оценок.",
+        },
+        order_number: { type: "integer" },
+      },
+      required: ["topic", "summary"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 const Slug = z.object({ slug: z.string() });
 const Line = z.object({ slug: z.string(), qty: z.number().int(), night: z.string().optional() });
 const Query = z.object({ query: z.string().max(300) });
 const Number_ = z.object({ number: z.number().int() });
-const Manager = z.object({ reason: z.string().min(1).max(300), order_number: z.number().int().optional() });
+const Manager = z.object({ topic: z.enum(MANAGER_TOPICS), summary: z.string().min(1).max(500), order_number: z.number().int().optional() });
 
 /** «today», «tomorrow» or a date; anything else goes to the server as is and fails its check. */
 function toNight(value: string | undefined): string | undefined {
@@ -119,11 +137,11 @@ export async function runTool(session: Session, name: string, input: unknown): P
       return { result: order ?? failed("not_found"), trace: `get_order_status(${number}) = ${order?.status ?? "not_found"}`, changed: false };
     }
     case "call_manager": {
-      const { reason, order_number } = Manager.parse(input);
+      const { topic, summary, order_number } = Manager.parse(input);
       // Link the event to an order only if it is this buyer's own order.
       const own = order_number !== undefined && (await getOrder(session.id, order_number)) !== null;
-      await callManager(session, reason, own ? order_number : undefined);
-      return { result: { called: true }, trace: "call_manager() ✓", changed: false };
+      await callManager(session, topic, summary, own ? order_number : undefined);
+      return { result: { called: true }, trace: `call_manager(${topic}) ✓`, changed: false };
     }
     default:
       return { result: failed("unknown_tool"), trace: `${name}() ✗`, changed: false };

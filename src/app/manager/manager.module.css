@@ -159,6 +159,11 @@
   box-shadow: 0 0 0 2px #ff4a12;
 }
 
+.topic {
+  color: var(--tg-hint);
+  font-size: 13.5px;
+}
+
 .status {
   color: var(--tg-blue);
   font-weight: 500;

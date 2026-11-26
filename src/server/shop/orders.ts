@@ -3,6 +3,7 @@ import { and, desc, eq, inArray, lt, sql } from "drizzle-orm";
 import { cartTotal, describeCart } from "@/domain/cart";
 import { findDream, type DreamSlug } from "@/domain/catalog";
 import { cents, formatUsd } from "@/domain/money";
+import { cleanSummary, type ManagerTopic } from "@/domain/manager-request";
 import { advance, nextStatus, type OrderStatus } from "@/domain/order";
 import { fail, ok } from "@/domain/result";
 import { db } from "../db/client";
@@ -115,8 +116,13 @@ export async function advanceStaleOrders(): Promise<void> {
   }
 }
 
-/** The assistant or the buyer asks for a human: a feed event the manager sees. */
-export async function callManager(session: Session, reason: string, orderNumber?: number) {
-  await db().insert(events).values({ orderNumber: orderNumber ?? null, type: "manager_called", payload: { alias: session.alias, reason: reason.slice(0, 300) } });
+/**
+ * The assistant or the buyer asks for a human: a feed event every demo visitor sees, so it
+ * carries a fixed topic and a cleaned one-line summary, never the buyer's raw words.
+ */
+export async function callManager(session: Session, topic: ManagerTopic, summary: string, orderNumber?: number) {
+  await db()
+    .insert(events)
+    .values({ orderNumber: orderNumber ?? null, type: "manager_called", payload: { alias: session.alias, topic, reason: cleanSummary(summary) } });
   return ok({ called: true });
 }
